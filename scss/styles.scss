@@ -1,0 +1,315 @@
+$bg-color-darker: rgb(13, 27, 57);
+$bg-color: rgb(37, 68, 127);
+$font-color: rgb(255, 255, 255);
+$white-transparent: rgba(255, 255, 255, 0.5);
+$grey: rgb(180, 180, 180);
+$background-firefox: rgba(37, 68, 127, 0.5);
+$font-color-note: rgb(204, 204, 204);
+$accent-color: rgb(154, 119, 59);
+$green: rgb(150, 219, 131);
+$red: rgb(218, 86, 86);
+$font-size: 1rem;
+$note-size: 0.7rem;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'poppins', sans-serif;
+  font-size: $font-size;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  //https://www.shutterstock.com/image-vector/enchanting-anime-landscape-mistcovered-mountain-600nw-2301778699.jpg
+  //https://static.vecteezy.com/system/resources/previews/026/481/313/large_2x/dive-into-a-futuristic-cyberpunk-cityscape-in-this-captivating-4k-anime-wallpaper-free-photo.jpg
+  background-image: url(../img/StarRail.png);
+  background-color: $bg-color;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+main {
+  width: 86%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+section {
+  width: 49%;
+  background-color: transparent;
+  backdrop-filter: blur(15px);
+  border: 2px solid $white-transparent;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding: 1rem 2rem;
+  margin: 1rem 0 0.5rem 0;
+  height: 37rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  @-moz-document url-prefix() {
+    background-color: $background-firefox;
+  }
+
+  // --- Scrollbar ---
+
+  // IE and Edge
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: $white-transparent transparent;
+  // Chrome, Safari and Opera
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $white-transparent;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  p {
+    width: 100%;
+    h2 {
+      width: 100%;
+      font-size: 1rem;
+      color: $font-color;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 2px #000;
+    }
+  }
+}
+
+footer {
+  width: 86.25%;
+  background-color: transparent;
+  border: 2px solid $white-transparent;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  bottom: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  margin: 0.5rem 0 0.5rem 0;
+
+  @-moz-document url-prefix() {
+    background-color: $background-firefox;
+  }
+
+  p {
+    color: $font-color;
+    text-align: center;
+    font-weight: 450;
+
+    a {
+      font-style: italic;
+    }
+  }
+}
+
+h1 {
+  width: 80%;
+  font-size: 1.7rem;
+  color: $font-color;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 2px #000;
+}
+
+ul {
+  list-style: none;
+  color: $font-color;
+  align-items: start;
+  text-align: left;
+  text-shadow: 1px 1px 2px #000;
+
+  &:not(:last-of-type) {
+    border-bottom: 2px solid $font-color;
+  }
+
+  li {
+    padding: 0 4rem;
+    position: relative;
+    align-items: start;
+    text-align: left;
+    text-shadow: 1px 1px 2px #000;
+    display: flex;
+
+    &::before {
+      content: "▷";
+      padding-right: 1rem;
+    }
+  }
+}
+
+a {
+  color: $font-color;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: $font-size;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  width: 100%;
+  border-radius: 15px;
+  background-color: $font-color;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+
+  &:hover {
+    background-color: $white-transparent;
+    color: $font-color;
+  }
+}
+
+.input-group {
+  position: relative;
+  margin: 5px 0;
+  width: 100%;
+  border: 2px solid $white-transparent;
+  border-radius: 20px;
+
+  label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 20px 25px;
+    color: $font-color;
+    font-size: 1rem;
+    pointer-events: none;
+    text-align: left;
+    text-shadow: 1px 1px 2px #000;
+
+  }
+
+  input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    padding: 20px 25px;
+    color: $font-color;
+    text-align: right;
+
+    // Chrome, Safari, Edge, Opera
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    // Firefox
+    &[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    &::placeholder {
+      color: $white-transparent;
+    }
+  }
+
+  p {
+    padding: 18px 25px;
+    color: $font-color;
+    font-size: 1rem;
+  }
+
+  button {
+    position: absolute;
+    border-radius: 5px;
+    border: 2px solid $white-transparent;
+    height: 1rem;
+    width: 1rem;
+    right: 1rem;
+    transform: translateY(-10%);
+
+    &[clicked=false] {
+      background-color: transparent;
+    }
+    &:hover {
+      background-color: $white-transparent;
+    }
+  }
+
+  img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-1px);
+    height: 3.75rem;
+    width: auto;
+    border: 3px solid $grey;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+}
+
+select {
+  background-color: transparent;
+  color: $font-color;
+  border: 2px solid $white-transparent;
+  border-radius: 10px;
+
+  option {
+    background-color: $bg-color;
+    color: $font-color;
+  }
+
+  &:hover {
+    background-color: $white-transparent;
+  }
+}
+
+.note {
+  width: 80%;
+  font-weight: 450;
+  color: $font-color-note;
+  font-size: $note-size;
+  font-style: italic;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000;
+
+  a {
+    font-size: $note-size;
+    text-shadow: 1px 1px 2px #000;
+  }
+}
+
+.red {
+  color: $red;
+}
+
+.hidden {
+  color: transparent;
+  background-color: transparent;
+  border: 0;
+  backdrop-filter: none;
+  text-shadow: none;
+}
+
+.shadowed {
+  text-shadow: 1px 1px 2px #000;
+}
