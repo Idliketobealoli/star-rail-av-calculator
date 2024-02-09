@@ -9,7 +9,13 @@ $accent-color: rgb(154, 119, 59);
 $green: rgb(150, 219, 131);
 $red: rgb(218, 86, 86);
 $font-size: 1rem;
+$font-size-low: 0.8rem;
+$font-size-lowest: 0.6rem;
 $note-size: 0.7rem;
+$note-size-small: 0.6rem;
+$note-size-smallest: 0.5rem;
+$input-group-low-width: 500px;
+$input-group-lowest-width: 350px;
 
 * {
   margin: 0;
@@ -48,10 +54,14 @@ body {
   //https://static.vecteezy.com/system/resources/previews/026/481/313/large_2x/dive-into-a-futuristic-cyberpunk-cityscape-in-this-captivating-4k-anime-wallpaper-free-photo.jpg
   background-image: url(../img/StarRail.png);
   background-color: $bg-color;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-repeat: repeat-x;
+  background-position: bottom;
   background-size: cover;
   background-attachment: fixed;
+
+  @media (orientation: portrait) {
+    background-size: auto 100%;
+  }
 }
 
 main {
@@ -64,7 +74,7 @@ main {
   gap: 1rem;
 }
 
-section {
+#message, section {
   width: 60%;
   background-color: transparent;
   backdrop-filter: blur(15px);
@@ -79,6 +89,17 @@ section {
   height: 37rem;
   overflow-x: hidden;
   overflow-y: auto;
+
+  @media (max-width: $input-group-low-width)
+  and (min-width: $input-group-lowest-width) {
+    font-size: $font-size-low;
+    padding: 15px 20px;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    font-size: $font-size-lowest;
+    padding: 10px 15px;
+  }
 
   @-moz-document url-prefix() {
     background-color: $background-firefox;
@@ -112,6 +133,16 @@ section {
       text-align: center;
       margin-bottom: 1rem;
       text-shadow: 1px 1px 2px #000;
+
+      @media (max-width: $input-group-low-width) and (min-width: $input-group-lowest-width) {
+        font-size: $font-size-low;
+        margin-bottom: $font-size-low;
+      }
+
+      @media (max-width: $input-group-lowest-width) {
+        font-size: $font-size-lowest;
+        margin-bottom: $font-size-lowest;
+      }
     }
   }
 }
@@ -137,6 +168,15 @@ footer {
     text-align: center;
     font-weight: 450;
 
+    @media (max-width: $input-group-low-width) and (min-width: $input-group-lowest-width) {
+      font-size: $font-size-low;
+      font-weight: unset;
+    }
+
+    @media (max-width: $input-group-lowest-width) {
+      font-size: $font-size-lowest;
+      font-weight: unset;
+    }
     a {
       font-style: italic;
     }
@@ -145,13 +185,19 @@ footer {
   &.full-width {
     width: 87%;
   }
+
+  @media (max-width: $input-group-low-width) and (min-width: $input-group-lowest-width) {
+    font-size: $font-size-low;
+    padding: 15px 20px;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    font-size: $font-size-lowest;
+    padding: 10px 15px;
+  }
 }
 
 @media (max-width: 1000px) {
-  body {
-    background-size: auto 100%;
-  }
-
   main {
     flex-direction: column;
     gap: 0;
@@ -160,6 +206,11 @@ footer {
   section {
     width: 100%;
     margin: 0.5rem 0;
+    height: max-content;
+  }
+
+  #message {
+    height: max-content;
   }
 
   footer {
@@ -182,6 +233,15 @@ h1 {
   text-align: center;
   margin-bottom: 1rem;
   text-shadow: 1px 1px 2px #000;
+
+  @media (max-width: $input-group-low-width)
+  and (min-width: $input-group-lowest-width) {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    font-size: 1rem;
+  }
 }
 
 ul {
@@ -206,6 +266,20 @@ ul {
     &::before {
       content: "▷";
       padding-right: 1rem;
+
+      @media (max-width: $input-group-low-width) {
+        padding-right: 0.3rem;
+      }
+    }
+
+    @media (max-width: $input-group-low-width) and (min-width: $input-group-lowest-width) {
+      font-size: $font-size-low;
+      padding: 15px 20px;
+    }
+
+    @media (max-width: $input-group-lowest-width) {
+      font-size: $font-size-lowest;
+      padding: 10px 15px;
     }
   }
 }
@@ -218,6 +292,15 @@ a {
 
   &:hover {
     text-decoration: underline;
+  }
+
+  @media (max-width: $input-group-low-width)
+  and (min-width: $input-group-lowest-width) {
+    font-size: $font-size-low;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    font-size: $font-size-lowest;
   }
 }
 
@@ -237,6 +320,17 @@ button {
     background-color: $white-transparent;
     color: $font-color;
   }
+
+  @media (max-width: $input-group-low-width)
+  and (min-width: $input-group-lowest-width) {
+    font-size: $font-size-low;
+    padding: 0.4rem;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    font-size: $font-size-lowest;
+    padding: 0.3rem;
+  }
 }
 
 .input-group {
@@ -246,7 +340,7 @@ button {
   border: 2px solid $white-transparent;
   border-radius: 20px;
 
-  label { // TODO: ENCONTRAR UNA FORMA DE QUE EL LABEL NO SE SUPERPONGA AL INPUT EN TAMAÑO DE PANTALLA PARA MOVIL
+  label {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -257,6 +351,28 @@ button {
     text-align: left;
     text-shadow: 1px 1px 2px #000;
 
+    &.hasImage {
+      margin-left: 3rem;
+    }
+
+    @media (max-width: $input-group-low-width)
+    and (min-width: $input-group-lowest-width) {
+      font-size: $font-size-low;
+      padding: 15px 20px;
+
+      &.hasImage {
+        margin-left: 2.2rem;
+      }
+    }
+
+    @media (max-width: $input-group-lowest-width) {
+      font-size: $font-size-lowest;
+      padding: 10px 15px;
+
+      &.hasImage {
+        margin-left: 0;
+      }
+    }
   }
 
   input {
@@ -284,12 +400,34 @@ button {
     &::placeholder {
       color: $white-transparent;
     }
+
+    @media (max-width: $input-group-low-width)
+    and (min-width: $input-group-lowest-width) {
+      font-size: $font-size-low;
+      padding: 15px 20px;
+    }
+
+    @media (max-width: $input-group-lowest-width) {
+      font-size: $font-size-lowest;
+      padding: 10px 15px;
+    }
   }
 
   p {
     padding: 18px 25px;
     color: $font-color;
     font-size: 1rem;
+
+    @media (max-width: $input-group-low-width)
+    and (min-width: $input-group-lowest-width) {
+      font-size: $font-size-low;
+      padding: 15px 20px;
+    }
+
+    @media (max-width: $input-group-lowest-width) {
+      font-size: $font-size-lowest;
+      padding: 10px 15px;
+    }
   }
 
   button {
@@ -318,6 +456,15 @@ button {
     border: 3px solid $grey;
     border-radius: 20px;
     object-fit: cover;
+
+    @media (max-width: $input-group-low-width)
+    and (min-width: $input-group-lowest-width) {
+      height: 3rem;
+    }
+
+    @media (max-width: $input-group-lowest-width) {
+      display: none;
+    }
   }
 }
 
@@ -335,6 +482,15 @@ select {
   &:hover {
     background-color: $white-transparent;
   }
+
+  @media (max-width: $input-group-low-width)
+  and (min-width: $input-group-lowest-width) {
+    font-size: $font-size-low;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    font-size: $font-size-lowest;
+  }
 }
 
 .note {
@@ -349,6 +505,24 @@ select {
   a {
     font-size: $note-size;
     text-shadow: 1px 1px 2px #000;
+
+    @media (max-width: $input-group-low-width)
+    and (min-width: $input-group-lowest-width) {
+      font-size: $note-size-small;
+    }
+
+    @media (max-width: $input-group-lowest-width) {
+      font-size: $note-size-smallest;
+    }
+  }
+
+  @media (max-width: $input-group-low-width)
+  and (min-width: $input-group-lowest-width) {
+    font-size: $note-size-small;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    font-size: $note-size-smallest;
   }
 }
 
@@ -358,4 +532,51 @@ select {
 
 .shadowed {
   text-shadow: 1px 1px 2px #000;
+}
+
+#message {
+  min-width: 450px;
+  width: 40%;
+  height: auto;
+  //max-height: 300px;
+  color: $font-color;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000;
+
+  h2 {
+    width: 100%;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  h1 {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid $font-color;
+  }
+
+  h3 {
+    width: 50%;
+    font-size: 1rem;
+    text-align: center;
+    text-shadow: 1px 1px 2px #000;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $font-color;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: $input-group-low-width)
+  and (min-width: $input-group-lowest-width) {
+    min-width: 0;
+    width: 90%;
+    font-size: $font-size-low;
+    padding: 15px 20px;
+  }
+
+  @media (max-width: $input-group-lowest-width) {
+    min-width: 0;
+    width: 95%;
+    font-size: $font-size-lowest;
+    padding: 15px 20px;
+  }
 }
