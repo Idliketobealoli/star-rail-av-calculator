@@ -173,6 +173,16 @@ function ult(character) {
 }
 
 function calculate(sSpd, hSpd, fSpd, swSpd, cycles) {
+    if (  sSpd < 115) {   sSpd = 115; }
+    if (  sSpd > 250) {   sSpd = 250; }
+    if (  hSpd < 101) {   hSpd = 101; }
+    if (  hSpd > 250) {   hSpd = 250; }
+    if (  fSpd < 100) {   fSpd = 100; }
+    if (  fSpd > 250) {   fSpd = 250; }
+    if ( swSpd < 107) {  swSpd = 107; }
+    if ( swSpd > 250) {  swSpd = 250; }
+    if (cycles <   1) { cycles =   1; }
+    if (cycles >  40) { cycles =  40; }
     reset(cycles);
     seele = new Character("seele", sSpd, 0, 115);
     hanabi = new Character("hanabi", hSpd, 0, 101);
@@ -215,4 +225,35 @@ function changeE2seele(e) {
     else { e.target.setAttribute("clicked", "true"); }
     isE2Seele = !isE2Seele;
     return isE2Seele;
+}
+
+function showResults(results, container) {
+    let resultsParagraph = document.getElementById("results");
+    if (resultsParagraph !== null) { resultsParagraph.remove(); }
+    resultsParagraph = document.createElement("p");
+    resultsParagraph.setAttribute("id", "results");
+
+    let h1Results = document.getElementById("h1Results");
+    if (h1Results !== null) { h1Results.remove(); }
+    h1Results = document.createElement("h1");
+    h1Results.setAttribute("id", "h1Results");
+    h1Results.textContent = "Results";
+
+    let resultSection = document.getElementById("resultSection");
+    if (resultSection !== null) { resultSection.remove(); }
+    resultSection = document.createElement("section");
+    resultSection.setAttribute("id", "resultSection");
+
+    for (let i = 0; i < results.length; i++) {
+        resultsParagraph.innerHTML += results[i].message;
+    }
+
+    resultSection.append(h1Results, resultsParagraph);
+    container.appendChild(resultSection);
+}
+
+function setFooterWidth(main, footer) {
+    if (main && main.children.length === 2) {
+        footer.classList.add("full-width");
+    }
 }

@@ -5,6 +5,19 @@
   box-sizing: border-box;
   font-family: "poppins", sans-serif;
   font-size: 1rem;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+*::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 body {
@@ -18,18 +31,21 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  background-attachment: fixed;
 }
 
 main {
-  width: 86%;
+  height: auto;
+  width: 87%;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 section {
-  width: 49%;
+  width: 60%;
   background-color: transparent;
   backdrop-filter: blur(15px);
   border: 2px solid rgba(255, 255, 255, 0.5);
@@ -74,11 +90,32 @@ section p h2 {
   text-shadow: 1px 1px 2px #000;
 }
 
+@media (max-width: 1000px) {
+  body {
+    background-size: auto 100%;
+  }
+  main {
+    flex-direction: column;
+    gap: 0;
+  }
+  section {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+  footer {
+    width: 87%;
+  }
+}
+@media (min-width: 1001px) {
+  section:nth-child(2) {
+    width: 50%;
+  }
+}
 footer {
-  width: 86.25%;
+  width: 52.5%;
   background-color: transparent;
   border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
+  border-radius: 10px;
   backdrop-filter: blur(15px);
   bottom: 1rem;
   justify-content: center;
@@ -98,6 +135,9 @@ footer p {
 }
 footer p a {
   font-style: italic;
+}
+footer.full-width {
+  width: 87%;
 }
 
 h1 {
@@ -120,7 +160,7 @@ ul:not(:last-of-type) {
   border-bottom: 2px solid rgb(255, 255, 255);
 }
 ul li {
-  padding: 0 4rem;
+  padding: 0 1.5rem;
   position: relative;
   align-items: start;
   text-align: left;
@@ -258,14 +298,6 @@ select:hover {
 
 .red {
   color: rgb(218, 86, 86);
-}
-
-.hidden {
-  color: transparent;
-  background-color: transparent;
-  border: 0;
-  backdrop-filter: none;
-  text-shadow: none;
 }
 
 .shadowed {

@@ -17,6 +17,25 @@ $note-size: 0.7rem;
   box-sizing: border-box;
   font-family: 'poppins', sans-serif;
   font-size: $font-size;
+
+  // --- Scrollbar ---
+
+  // IE and Edge
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: $white-transparent transparent;
+  // Chrome, Safari and Opera
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $white-transparent;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 }
 
 body {
@@ -32,18 +51,21 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  background-attachment: fixed;
 }
 
 main {
-  width: 86%;
+  height: auto;
+  width: 87%;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 section {
-  width: 49%;
+  width: 60%;
   background-color: transparent;
   backdrop-filter: blur(15px);
   border: 2px solid $white-transparent;
@@ -95,10 +117,10 @@ section {
 }
 
 footer {
-  width: 86.25%;
+  width: 52.5%;
   background-color: transparent;
   border: 2px solid $white-transparent;
-  border-radius: 20px;
+  border-radius: 10px;
   backdrop-filter: blur(15px);
   bottom: 1rem;
   justify-content: center;
@@ -117,6 +139,38 @@ footer {
 
     a {
       font-style: italic;
+    }
+  }
+
+  &.full-width {
+    width: 87%;
+  }
+}
+
+@media (max-width: 1000px) {
+  body {
+    background-size: auto 100%;
+  }
+
+  main {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  section {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  footer {
+    width: 87%;
+  }
+}
+
+@media (min-width: 1001px) {
+  section {
+    &:nth-child(2) {
+      width: 50%;
     }
   }
 }
@@ -142,7 +196,7 @@ ul {
   }
 
   li {
-    padding: 0 4rem;
+    padding: 0 1.5rem;
     position: relative;
     align-items: start;
     text-align: left;
@@ -192,7 +246,7 @@ button {
   border: 2px solid $white-transparent;
   border-radius: 20px;
 
-  label {
+  label { // TODO: ENCONTRAR UNA FORMA DE QUE EL LABEL NO SE SUPERPONGA AL INPUT EN TAMAÑO DE PANTALLA PARA MOVIL
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -300,14 +354,6 @@ select {
 
 .red {
   color: $red;
-}
-
-.hidden {
-  color: transparent;
-  background-color: transparent;
-  border: 0;
-  backdrop-filter: none;
-  text-shadow: none;
 }
 
 .shadowed {
