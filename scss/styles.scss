@@ -342,8 +342,6 @@ button {
 
   label {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     padding: 20px 25px;
     color: $font-color;
     font-size: 1rem;
@@ -418,15 +416,27 @@ button {
     color: $font-color;
     font-size: 1rem;
 
+    &.hasImage {
+      margin-left: 3rem;
+    }
+
     @media (max-width: $input-group-low-width)
     and (min-width: $input-group-lowest-width) {
       font-size: $font-size-low;
       padding: 15px 20px;
+
+      &.hasImage {
+        margin-left: 2.2rem;
+      }
     }
 
     @media (max-width: $input-group-lowest-width) {
       font-size: $font-size-lowest;
       padding: 10px 15px;
+
+      &.hasImage {
+        margin-left: 0;
+      }
     }
   }
 
@@ -449,11 +459,11 @@ button {
 
   img {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%) translateX(-1px);
-    height: 3.75rem;
+    //top: 50%;
+    transform: translateY(-2px) translateX(-2px);
+    height: 3.9rem;
     width: auto;
-    border: 3px solid $grey;
+    border: 3px solid $font-color-note;
     border-radius: 20px;
     object-fit: cover;
 
@@ -528,6 +538,10 @@ select {
 
 .red {
   color: $red;
+}
+
+.red-border {
+  border-color: $red;
 }
 
 .shadowed {

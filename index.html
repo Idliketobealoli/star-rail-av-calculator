@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="shortcut icon" href="img/HSRLogo.png">
-    <script src="common.js"></script>
-    <script src="script.js"></script>
+    <script type="module" src="src/scripts/common.js"></script>
+    <script type="module" src="src/scripts/script.js"></script>
     <title>HSR Action Value Calculator</title>
 </head>
 <body>
@@ -18,26 +18,42 @@
             <img src="img/Seele.png"/>
             <label for="seeleSpd" class="hasImage">Seele's speed:<span class="red">*</span></label>
             <input type="number" id="seeleSpd" min="115" placeholder="ex. 115" required autocomplete="off"/>
+            <p class="shadowed hasImage">
+                Is she E2 or higher?
+                <button id="e2Seele" clicked="false"></button>
+            </p>
         </div>
         <div class="input-group">
             <img src="img/Sparkle.png"/>
             <label for="hanabiSpd" class="hasImage">Sparkle's speed:<span class="red">*</span></label>
             <input type="number" id="hanabiSpd" min="101" placeholder="ex. 101" required autocomplete="off"/>
+            <p class="shadowed hasImage">
+                Equipped set:
+                <select id="sparkleSet" required></select><br/><br/>
+                Does she wear Vonwacq?
+                <button id="sparkleVonwacq" name="sparkle" clicked="false"></button>
+            </p>
         </div>
         <div class="input-group">
-            <img src="img/FuXuan.png"/>
-            <label for="fuSpd" class="hasImage">Fu Xuan's speed:<span class="red">*</span></label>
+            <img id="prioSupImg" src="img/FuXuan.png"/>
+            <label for="fuSpd" class="hasImage">Prioritary support's speed:<span class="red">*</span></label>
             <input type="number" id="fuSpd" min="100" placeholder="ex. 100" required autocomplete="off"/>
+            <p class="shadowed hasImage">
+                Equipped set:
+                <select id="prioSupSet" required></select><br/><br/>
+                Does the character wear Vonwacq?
+                <button id="prioSupVonwacq" name="prioSup" clicked="false"></button>
+            </p>
         </div>
         <div class="input-group">
-            <img src="img/SilverWolf.png"/>
-            <label for="swSpd" class="hasImage">Silver Wolf's speed:<span class="red">*</span></label>
+            <img id="supImg" src="img/SilverWolf.png"/>
+            <label for="swSpd" class="hasImage">Other support's speed:<span class="red">*</span></label>
             <input type="number" id="swSpd" min="107" placeholder="ex. 107" required autocomplete="off"/>
-        </div>
-        <div class="input-group">
-            <p class="shadowed">
-                Is your Seele E2 or higher?
-                <button id="e2Seele" clicked="false"></button>
+            <p class="shadowed hasImage">
+                Equipped set:
+                <select id="supSet" required></select><br/><br/>
+                Does the character wear Vonwacq?
+                <button id="supVonwacq" name="sup" clicked="false"></button>
             </p>
         </div>
         <div class="input-group">
@@ -58,7 +74,7 @@
 </main>
 <footer id="footer">
     <p>Developed by Idlike2bealoli (UID: 714900809).</p>
-    <p>Follow me on <a href="https://github.com/Idliketobealoli">GitHub</a>.</p>
+    <p>My <a href="https://github.com/Idliketobealoli">GitHub</a>.</p>
 </footer>
 </body>
 </html>

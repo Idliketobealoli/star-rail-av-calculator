@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="shortcut icon" href="img/HSRLogo.png">
-    <script src="common.js"></script>
-    <script src="simulations.js"></script>
+    <script type="module" src="src/scripts/common.js"></script>
+    <script type="module" src="src/scripts/simulations.js"></script>
     <title>HSR Action Value Calculator</title>
 </head>
 <body>
@@ -19,8 +19,8 @@
             <input type="number" id="seeleMinSpd" min="115" placeholder="ex. 115" autocomplete="off"/>
         </div>
         <div class="input-group">
-            <label for="seeleSpd">Seele's max speed:</label>
-            <input type="number" id="seeleSpd" min="115" placeholder="ex. 134" autocomplete="off"/>
+            <label for="seeleMaxSpd">Seele's max speed:</label>
+            <input type="number" id="seeleMaxSpd" min="115" placeholder="ex. 134" autocomplete="off"/>
         </div>
         <div class="input-group">
             <p class="shadowed">
@@ -33,8 +33,8 @@
             <input type="number" id="hanabiMinSpd" min="101" placeholder="ex. 101" autocomplete="off"/>
         </div>
         <div class="input-group">
-            <label for="hanabiSpd">Sparkle's max speed:</label>
-            <input type="number" id="hanabiSpd" min="101" placeholder="ex. 161" autocomplete="off"/>
+            <label for="hanabiMaxSpd">Sparkle's max speed:</label>
+            <input type="number" id="hanabiMaxSpd" min="101" placeholder="ex. 161" autocomplete="off"/>
         </div>
         <div class="input-group">
             <label for="fuSpd">Fu Xuan's speed:<span class="red">*</span></label>
@@ -59,7 +59,7 @@
             </p>
         </div>
         <div class="input-group">
-            <label for="hanabiSpd">Expected number of buffed turns:</label>
+            <label for="buffedExpected">Expected number of buffed turns:</label>
             <input type="number" id="buffedExpected" min="1" placeholder="ex. 5" autocomplete="off"/>
         </div>
         <div class="input-group">
@@ -77,7 +77,7 @@
 </main>
 <footer id="footer">
     <p>Developed by Idlike2bealoli (UID: 714900809).</p>
-    <p>Follow me on <a href="https://github.com/Idliketobealoli">GitHub</a>.</p>
+    <p>My <a href="https://github.com/Idliketobealoli">GitHub</a>.</p>
 </footer>
 </body>
 </html>

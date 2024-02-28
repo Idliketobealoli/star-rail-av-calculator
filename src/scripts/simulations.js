@@ -1,3 +1,13 @@
+import {
+    calculate,
+    changeE2seele,
+    filterResults,
+    resetResults,
+    setFooterWidth,
+    showResults,
+    spliceResults
+} from "./common.js";
+
 {
     let button, inputFuSpd, main, footer,
         inputSwSpd, inputCycles, inputMaxSeeleSpd,
@@ -8,9 +18,9 @@
     function start() {
         button = document.getElementById("calculate");
         inputMinSeeleSpd = document.getElementById("seeleMinSpd");
-        inputMaxSeeleSpd = document.getElementById("seeleSpd");
+        inputMaxSeeleSpd = document.getElementById("seeleMaxSpd");
         inputMinHanabiSpd = document.getElementById("hanabiMinSpd");
-        inputMaxHanabiSpd = document.getElementById("hanabiSpd");
+        inputMaxHanabiSpd = document.getElementById("hanabiMaxSpd");
         inputExpectedBuffs = document.getElementById("buffedExpected");
         inputFuSpd = document.getElementById("fuSpd");
         inputSwSpd = document.getElementById("swSpd");
@@ -26,15 +36,16 @@
     }
 
     function simulate() {
+        resetResults();
         validateSimulation();
         runSimulations();
-        filterResults();
+        filterResults(inputExpectedBuffs.value, filterCriteria.value);
 
         if (inputResultsAmount.value  === "" || inputResultsAmount.value < 1) { inputResultsAmount.value = 10; }
         if (inputResultsAmount.value  > 50) { inputResultsAmount.value = 50; }
-        window.results.splice(inputResultsAmount.value);
+        spliceResults(inputResultsAmount.value);
 
-        showResults(window.results, main);
+        showResults(main);
         setFooterWidth(main, footer);
     }
 
@@ -51,53 +62,16 @@
     }
 
     function runSimulations() {
-        window.results = [];
         let seeleSpdSimulation = inputMinSeeleSpd.value;
         let hanabiSpdSimulation = inputMinHanabiSpd.value;
         while (seeleSpdSimulation <= inputMaxSeeleSpd.value) {
             while (hanabiSpdSimulation <= inputMaxHanabiSpd.value) {
-                calculate(seeleSpdSimulation, hanabiSpdSimulation, inputFuSpd.value, inputSwSpd.value, inputCycles.value);
+                calculate(seeleSpdSimulation, hanabiSpdSimulation, inputFuSpd.value, inputSwSpd.value, inputCycles.value,
+                    119, 'Fu Xuan', 'Silver Wolf', 5);
                 hanabiSpdSimulation++;
             }
             seeleSpdSimulation++;
             hanabiSpdSimulation = inputMinHanabiSpd.value;
-        }
-    }
-
-    function filterResults() {
-        let maxBuffedTurns;
-        if (inputExpectedBuffs.value === "") {
-            maxBuffedTurns = window.results.reduce((maxResult, currentResult) => {
-                return currentResult.buffedTurns > maxResult.buffedTurns ? currentResult : maxResult;
-            }, window.results[0]).buffedTurns - 2;
-        }
-        else { maxBuffedTurns = inputExpectedBuffs.value; }
-        window.results = results.filter(result => result.buffedTurns >= maxBuffedTurns);
-
-        if (filterCriteria.value === "2") {
-            window.results = results.sort((a, b) => {
-                // Compare based on buffedTurns in descending order
-                if (a.buffedTurns > b.buffedTurns) {
-                    return -1;
-                } else if (a.buffedTurns < b.buffedTurns) {
-                    return 1;
-                } else {
-                    // If buffedTurns are equal, compare based on seeleTurns in ascending order
-                    return b.seeleTurns - a.seeleTurns;
-                }
-            });
-        }
-
-        else {
-            window.results = results.sort((a, b) => {
-                if (a.seeleTurns > b.seeleTurns) {
-                    return -1;
-                } else if (a.seeleTurns < b.seeleTurns) {
-                    return 1;
-                } else {
-                    return b.buffedTurns - a.buffedTurns;
-                }
-            });
         }
     }
 

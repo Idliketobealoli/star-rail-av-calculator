@@ -311,8 +311,6 @@ button:hover {
 }
 .input-group label {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   padding: 20px 25px;
   color: rgb(255, 255, 255);
   font-size: 1rem;
@@ -378,16 +376,25 @@ button:hover {
   color: rgb(255, 255, 255);
   font-size: 1rem;
 }
+.input-group p.hasImage {
+  margin-left: 3rem;
+}
 @media (max-width: 500px) and (min-width: 350px) {
   .input-group p {
     font-size: 0.8rem;
     padding: 15px 20px;
+  }
+  .input-group p.hasImage {
+    margin-left: 2.2rem;
   }
 }
 @media (max-width: 350px) {
   .input-group p {
     font-size: 0.6rem;
     padding: 10px 15px;
+  }
+  .input-group p.hasImage {
+    margin-left: 0;
   }
 }
 .input-group button {
@@ -407,11 +414,10 @@ button:hover {
 }
 .input-group img {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%) translateX(-1px);
-  height: 3.75rem;
+  transform: translateY(-2px) translateX(-2px);
+  height: 3.9rem;
   width: auto;
-  border: 3px solid rgb(180, 180, 180);
+  border: 3px solid rgb(204, 204, 204);
   border-radius: 20px;
   object-fit: cover;
 }
@@ -486,6 +492,10 @@ select:hover {
 
 .red {
   color: rgb(218, 86, 86);
+}
+
+.red-border {
+  border-color: rgb(218, 86, 86);
 }
 
 .shadowed {
