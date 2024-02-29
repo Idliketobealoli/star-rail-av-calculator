@@ -15,34 +15,60 @@
         <h1>Speed tuner for Seele monoquantum</h1>
 
         <div class="input-group">
-            <label for="seeleMinSpd">Seele's min speed:</label>
+            <img src="img/Seele.png"/>
+            <label for="seeleMinSpd" class="hasImage">Seele's min speed:</label>
             <input type="number" id="seeleMinSpd" min="115" placeholder="ex. 115" autocomplete="off"/>
-        </div>
-        <div class="input-group">
-            <label for="seeleMaxSpd">Seele's max speed:</label>
+            <label for="seeleMaxSpd" class="hasImage">Seele's max speed:</label>
             <input type="number" id="seeleMaxSpd" min="115" placeholder="ex. 134" autocomplete="off"/>
-        </div>
-        <div class="input-group">
-            <p class="shadowed">
-                Is your Seele E2 or higher?
-                <button id="e2Seele" clicked="false"></button>
+            <div class="separator"></div>
+            <p class="shadowed hasImage">
+                Is she E2 or higher?
+                <button id="e2Seele" name="seele" clicked="false"></button>
             </p>
         </div>
         <div class="input-group">
-            <label for="hanabiMinSpd">Sparkle's min speed:</label>
+            <img src="img/Sparkle.png"/>
+            <label for="hanabiMinSpd" class="hasImage">Sparkle's min speed:</label>
             <input type="number" id="hanabiMinSpd" min="101" placeholder="ex. 101" autocomplete="off"/>
-        </div>
-        <div class="input-group">
-            <label for="hanabiMaxSpd">Sparkle's max speed:</label>
+            <label for="hanabiMaxSpd" class="hasImage">Sparkle's max speed:</label>
             <input type="number" id="hanabiMaxSpd" min="101" placeholder="ex. 161" autocomplete="off"/>
+            <div class="separator"></div>
+            <p class="shadowed hasImage">
+                Equipped set:
+                <select id="sparkleSet" required></select><br/><br/>
+                Is she wearing Vonwacq?
+                <button id="sparkleVonwacq" name="sparkle" clicked="false"></button><br/><br/>
+                Is she using DDD?
+                <select id="sparkleDdd" name="ddd" required></select>
+            </p>
         </div>
         <div class="input-group">
-            <label for="fuSpd">Fu Xuan's speed:<span class="red">*</span></label>
-            <input type="number" id="fuSpd" min="100" placeholder="ex. 100" required autocomplete="off"/>
+            <img id="prioSupImg" src="img/FuXuan.png"/>
+            <label for="fuSpd" class="hasImage">Prioritary support's speed:<span class="red">*</span></label>
+            <input type="number" id="fuSpd" min="90" placeholder="ex. 100" required autocomplete="off"/>
+            <div class="separator"></div>
+            <p class="shadowed hasImage">
+                Who's your prioritary support?:
+                <select id="prioSup" required></select><br/><br/>
+                Equipped set:
+                <select id="prioSupSet" required></select><br/><br/>
+                Are they wearing Vonwacq?
+                <button id="prioSupVonwacq" name="prioSup" clicked="false"></button>
+            </p>
         </div>
         <div class="input-group">
-            <label for="swSpd">Silver Wolf's speed:<span class="red">*</span></label>
-            <input type="number" id="swSpd" min="107" placeholder="ex. 107" required autocomplete="off"/>
+            <img id="supImg" src="img/SilverWolf.png"/>
+            <label for="swSpd" class="hasImage">Other support's speed:<span class="red">*</span></label>
+            <input type="number" id="swSpd" min="90" placeholder="ex. 107" required autocomplete="off"/>
+            <div class="separator"></div>
+            <p class="shadowed hasImage">
+                Who's your other support?:
+                <select id="sup" required></select><br/><br/>
+                Equipped set:
+                <select id="supSet" required></select><br/><br/>
+                Are they wearing Vonwacq?
+                <button id="supVonwacq" name="sup" clicked="false"></button>
+            </p>
         </div>
         <div class="input-group">
             <label for="cycles">Number of cycles:<span class="red">*</span></label>
@@ -63,8 +89,14 @@
             <input type="number" id="buffedExpected" min="1" placeholder="ex. 5" autocomplete="off"/>
         </div>
         <div class="input-group">
-            <label for="resultsAmount">Amount of results shown: (Default 10, max 50)</label>
-            <input type="number" id="resultsAmount" min="1" max="50" placeholder="ex. 10" autocomplete="off"/>
+            <p class="shadowed">
+                Show the turn order?
+                <button id="turnOrder" name="turnOrder" clicked="false"></button>
+            </p>
+        </div>
+        <div class="input-group">
+            <label for="resultsAmount">Amount of results shown: (Default 10, max 25)</label>
+            <input type="number" id="resultsAmount" min="1" max="25" placeholder="ex. 10" autocomplete="off"/>
         </div>
         <span class="note">
         *If you want to fix either Sparkle's or Seele's speed value,

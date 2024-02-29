@@ -1,5 +1,13 @@
 import { Character } from './Character.js';
-import {addSp, cycle, getExtraMessage, getSp, setExtraMessage} from "../scripts/common.js";
+import {
+    addSp,
+    cycle,
+    getExtraMessage,
+    getSp,
+    getTurnOrderMessage,
+    setExtraMessage,
+    setTurnOrderMessage
+} from "../scripts/common.js";
 
 export class Support extends Character {
     constructor(name, spd, baseSpd, rotation, set, hasVonwacq) {
@@ -10,7 +18,7 @@ export class Support extends Character {
     }
 
     takeTurn() {
-        setExtraMessage(getExtraMessage().concat(`<br>${this.name} starts turn. Cycle ${cycle+1}.`));
+        setTurnOrderMessage(getTurnOrderMessage().concat(`${this.name} → `));
         if (this.speedBuffDuration > 0) { this.speedBuffDuration-- }
         if (this.speedBuffDuration === 0) { this.resetSpeed(); }
 
@@ -18,12 +26,7 @@ export class Support extends Character {
             addSp(-1);
         }
         else if (this.currentAction === 'E' && getSp() <= 0) {
-            if (getExtraMessage() === "") {
-                setExtraMessage(`Couldn't use ${this.name}'s E at cycle ${cycle+1}.`);
-            }
-            else {
-                setExtraMessage(getExtraMessage().concat(`<br>Couldn't use ${this.name}'s E at cycle ${cycle+1}.`));
-            }
+            setExtraMessage(getExtraMessage().concat(`<br>&nbsp;&nbsp;&nbsp;Couldn't use ${this.name}'s E at cycle ${cycle+1}.`));
             addSp(1);
         }
         else {

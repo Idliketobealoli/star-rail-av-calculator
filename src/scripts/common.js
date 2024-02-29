@@ -24,8 +24,10 @@ export let isE2Seele = false;
 export let sparkleVonwacq = false;
 export let prioSupVonwacq = false;
 export let supVonwacq = false;
+export let showTurnOrder = false;
 export let currentSp = 6;
 export let extraMessage = "";
+export let turnOrderMessage = "";
 export let counter = 0;
 export const MAX_SP = 7;
 
@@ -41,25 +43,22 @@ function adjustAv(amountToSubtract) {
 
 export function actionAdvance(percentage, characterCurrentAv, characterSpd) {
     let characterCurrentPosition = characterCurrentAv * characterSpd;
-    let amountForwarded = 10_000 * (1 - (percentage / 100));
+    let amountForwarded = 10_000 * (percentage / 100);
     let characterNewPosition = characterCurrentPosition - amountForwarded;
     if (characterNewPosition < 0 ) { return 0; }
     else return (characterNewPosition / characterSpd);
 }
 
-export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, prioSupName,
+export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, sparkleDdd, prioSupName,
                           otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
-    console.log(results.length);
     if (cycles <   1) { cycles =   1; }
     if (cycles >  40) { cycles =  40; }
-    initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupName,
+    initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, sparkleDdd, prioSupName,
         otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet);
     reset(cycles);
 
     cycleTurns = [dps, sparkle, prioritarySupport, otherSupport];
-    console.log(cycleTurns);
     cycleTurns = sortWithVonwacq(cycleTurns);
-    console.log(cycleTurns);
     setInitialSP(cycleTurns);
 
     while (cycle < numCycles) {
@@ -76,34 +75,35 @@ export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, prioSupNam
         cycle++;
     }
 
-    results.push(new Result(sSpd, dps.buffedTurnsTaken, dps.turnsTaken,
-        `<h2>Seele: ${sSpd} spd | Sparkle: ${hSpd} spd</h2>
+    let resultMessage = `<h2>Seele: ${sSpd} spd | Sparkle: ${hSpd} spd</h2>
                 <ul>
                     <li>Amount of turns taken by the DPS in ${numCycles} cycles: ${dps.turnsTaken}</li>
                     <li>Buffed turns: ${dps.buffedTurnsTaken}</li>
                     <li>Final SP: ${currentSp}</li>
                     <li>Seele basics: ${dps.basicAttacksUsed}</li>
                     <li>Sparkle basics: ${sparkle.basicAttacksUsed}</li>
-                    <li>Additional information: ${extraMessage}</li><br/>
-                </ul><br/>`));
+                    <li>Additional information: ${extraMessage}</li>`;
+    if (showTurnOrder) { resultMessage = resultMessage.concat(`<li>Turn order: <br/>${turnOrderMessage}</li>`) }
+    resultMessage = resultMessage.concat(`<br/></ul><br/>`);
+
+    results.push(new Result(sSpd, dps.buffedTurnsTaken, dps.turnsTaken, resultMessage));
     counter++;
 }
 
-export function changeE2seele(e) {
-    if (e.target.getAttribute("clicked") === "true") {
-        e.target.setAttribute("clicked", "false");
-    }
-    else { e.target.setAttribute("clicked", "true"); }
-    isE2Seele = !isE2Seele;
-    return isE2Seele;
-}
-
-export function wearsVonwacq(e) {
+export function trueFalseButton(e) {
     if (e.target.getAttribute("clicked") === "true") {
         e.target.setAttribute("clicked", "false");
     }
     else { e.target.setAttribute("clicked", "true"); }
     switch (e.target.getAttribute("name")) {
+        case "seele": {
+            isE2Seele = !isE2Seele;
+            return isE2Seele;
+        }
+        case "turnOrder": {
+            showTurnOrder = !showTurnOrder;
+            return showTurnOrder;
+        }
         case "sparkle": {
             sparkleVonwacq = !sparkleVonwacq;
             return sparkleVonwacq;
@@ -150,22 +150,22 @@ export function setFooterWidth(main, footer) {
     }
 }
 
-function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupName,
+function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, sparkleDdd, prioSupName,
                         otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
     dps = new Seele(sSpd, isE2Seele);
-    sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq);
+    sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq, sparkleDdd);
 
     prioritarySupport = initializeSupport(prioSupName, fSpd, prioSupSet, prioSupVonwacq);
     otherSupport = initializeSupport(otherSupName, swSpd, supSet, supVonwacq);
 }
 
-function initializeSupport(name, spd) {
+function initializeSupport(name, spd, prioSupSet, prioSupVonwacq) {
     switch (name) {
-        case 'Fu Xuan': return new Support(name, spd, 100, 'QQE');
-        case 'Silver Wolf': return new Support(name, spd, 107, 'EQQ');
+        case 'Fu Xuan': return new Support(name, spd, 100, 'QQE', prioSupSet, prioSupVonwacq);
+        case 'Silver Wolf': return new Support(name, spd, 107, 'EQQ', prioSupSet, prioSupVonwacq);
         // implement Bronya as a separate class.
         // case 'Bronya': return new Support(name, spd, 99, 'E');
-        default: return new Support('Default Support', spd, 100, 'EQQ');
+        default: return new Support('Default Support', spd, 100, 'EQQ', prioSupSet, prioSupVonwacq);
     }
 }
 
@@ -178,6 +178,7 @@ function reset(cycles) {
     dps.basicAttacksUsed = 0;
     sparkle.basicAttacksUsed = 0;
     extraMessage = "";
+    turnOrderMessage = "";
     dps.turnWillBeBuffed = false;
 }
 
@@ -203,6 +204,9 @@ export function getSp() { return currentSp; }
 
 export function getExtraMessage() { return extraMessage; }
 export function setExtraMessage(message) { extraMessage = message;}
+
+export function getTurnOrderMessage() { return turnOrderMessage; }
+export function setTurnOrderMessage(message) { turnOrderMessage = message; }
 
 export function sortResultsBySeeleTurns() { results = results.sort((a, b) => a.seeleTurns - b.seeleTurns); }
 export function resetResults() { results = []; }

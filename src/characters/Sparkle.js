@@ -1,13 +1,13 @@
-import { Character } from './Character.js';
+import {ArtifactSet, Character} from './Character.js';
 import {
     addSp, getSp, cycle, setSp,
     getExtraMessage, setExtraMessage,
-    MAX_SP, prioritarySupport, dps, cycleTurns
+    MAX_SP, prioritarySupport, dps, cycleTurns, setTurnOrderMessage, getTurnOrderMessage
 } from "../scripts/common.js";
 import {actionAdvance} from "../scripts/common.js";
 
 export class Sparkle extends Character {
-    constructor(spd, erPercentage, initialEnergyPercent, set, hasVonwacq) {
+    constructor(spd, erPercentage, initialEnergyPercent, set, hasVonwacq, ddd) {
         super('Sparkle', spd, 101, set, hasVonwacq);
         this.MAX_ENERGY = 110;
         this.currentEnergy = 0;
@@ -15,22 +15,18 @@ export class Sparkle extends Character {
         this.turnsTaken = 0;
         this.erPercentage = (erPercentage - 100) / 100;
         this.currentEnergy = this.MAX_ENERGY / initialEnergyPercent;
+        this.ddd = ddd;
     }
 
     takeTurn() {
-        setExtraMessage(getExtraMessage().concat(`<br>Sparkle starts turn ${this.turnsTaken}. Cycle ${cycle+1}.`));
+        setTurnOrderMessage(getTurnOrderMessage().concat("Sparkle → "));
         if (this.speedBuffDuration > 0) { this.speedBuffDuration-- }
         if (this.speedBuffDuration === 0) { this.resetSpeed(); }
         this.turnsTaken++;
         if (getSp() < 1 || (getSp() < 2 && prioritarySupport.getCurrentAction() === 'E' && cycleTurns[1] === prioritarySupport)) {
             addSp(1);
             this.basicAttacksUsed++;
-            if (getExtraMessage() === "") {
-                setExtraMessage(`Couldn't use Sparkle's E at turn number ${this.turnsTaken}. Cycle ${cycle+1}.`);
-            }
-            else {
-                setExtraMessage(getExtraMessage().concat(`<br>Couldn't use Sparkle's E at turn number ${this.turnsTaken}. Cycle ${cycle+1}.`));
-            }
+            setExtraMessage(getExtraMessage().concat(`<br>&nbsp;&nbsp;&nbsp;Couldn't use Sparkle's E at turn number ${this.turnsTaken}. Cycle ${cycle+1}.`));
             dps.turnWillBeBuffed = false;
         }
         else {
@@ -50,6 +46,15 @@ export class Sparkle extends Character {
                 setSp(MAX_SP);
             }
             this.currentEnergy = 5;
+        }
+        if (this.set === ArtifactSet.SPEED) {
+            this.speedSetEffect(cycleTurns);
+        }
+        if (this.set === ArtifactSet.WIND) {
+            this.windSetEffect();
+        }
+        if (this.ddd !== null && this.ddd >= 1 && this.ddd <= 5) {
+            this.danceDanceDance(this.ddd);
         }
     }
 

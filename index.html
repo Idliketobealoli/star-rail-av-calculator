@@ -18,47 +18,63 @@
             <img src="img/Seele.png"/>
             <label for="seeleSpd" class="hasImage">Seele's speed:<span class="red">*</span></label>
             <input type="number" id="seeleSpd" min="115" placeholder="ex. 115" required autocomplete="off"/>
+            <div class="separator"></div>
             <p class="shadowed hasImage">
                 Is she E2 or higher?
-                <button id="e2Seele" clicked="false"></button>
+                <button id="e2Seele" name="seele" clicked="false"></button>
             </p>
         </div>
         <div class="input-group">
             <img src="img/Sparkle.png"/>
             <label for="hanabiSpd" class="hasImage">Sparkle's speed:<span class="red">*</span></label>
             <input type="number" id="hanabiSpd" min="101" placeholder="ex. 101" required autocomplete="off"/>
+            <div class="separator"></div>
             <p class="shadowed hasImage">
                 Equipped set:
                 <select id="sparkleSet" required></select><br/><br/>
-                Does she wear Vonwacq?
-                <button id="sparkleVonwacq" name="sparkle" clicked="false"></button>
+                Is she wearing Vonwacq?
+                <button id="sparkleVonwacq" name="sparkle" clicked="false"></button><br/><br/>
+                Is she using DDD?
+                <select id="sparkleDdd" name="ddd" required></select>
             </p>
         </div>
         <div class="input-group">
             <img id="prioSupImg" src="img/FuXuan.png"/>
             <label for="fuSpd" class="hasImage">Prioritary support's speed:<span class="red">*</span></label>
-            <input type="number" id="fuSpd" min="100" placeholder="ex. 100" required autocomplete="off"/>
+            <input type="number" id="fuSpd" min="90" placeholder="ex. 100" required autocomplete="off"/>
+            <div class="separator"></div>
             <p class="shadowed hasImage">
+                Who's your prioritary support?:
+                <select id="prioSup" required></select><br/><br/>
                 Equipped set:
                 <select id="prioSupSet" required></select><br/><br/>
-                Does the character wear Vonwacq?
+                Are they wearing Vonwacq?
                 <button id="prioSupVonwacq" name="prioSup" clicked="false"></button>
             </p>
         </div>
         <div class="input-group">
             <img id="supImg" src="img/SilverWolf.png"/>
             <label for="swSpd" class="hasImage">Other support's speed:<span class="red">*</span></label>
-            <input type="number" id="swSpd" min="107" placeholder="ex. 107" required autocomplete="off"/>
+            <input type="number" id="swSpd" min="90" placeholder="ex. 107" required autocomplete="off"/>
+            <div class="separator"></div>
             <p class="shadowed hasImage">
+                Who's your other support?:
+                <select id="sup" required></select><br/><br/>
                 Equipped set:
                 <select id="supSet" required></select><br/><br/>
-                Does the character wear Vonwacq?
+                Are they wearing Vonwacq?
                 <button id="supVonwacq" name="sup" clicked="false"></button>
             </p>
         </div>
         <div class="input-group">
             <label for="cycles">Number of cycles:<span class="red">*</span></label>
             <input type="number" id="cycles" min="1" placeholder="ex. 1" required autocomplete="off"/>
+        </div>
+        <div class="input-group">
+            <p class="shadowed">
+                Show the turn order?
+                <button id="turnOrder" name="turnOrder" clicked="false"></button>
+            </p>
         </div>
         <span class="note">
         *The speed value for the characters allows for decimal points.
