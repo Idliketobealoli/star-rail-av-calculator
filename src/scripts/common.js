@@ -155,17 +155,17 @@ function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, sparkleDdd, prioSupN
     dps = new Seele(sSpd, isE2Seele);
     sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq, sparkleDdd);
 
-    prioritarySupport = initializeSupport(prioSupName, fSpd, prioSupSet, prioSupVonwacq);
-    otherSupport = initializeSupport(otherSupName, swSpd, supSet, supVonwacq);
+    prioritarySupport = initializeSupport(prioSupName, fSpd, 100, initialEnergyPerc, prioSupSet, prioSupVonwacq);
+    otherSupport = initializeSupport(otherSupName, swSpd, 100, initialEnergyPerc, supSet, supVonwacq);
 }
 
-function initializeSupport(name, spd, prioSupSet, prioSupVonwacq) {
+function initializeSupport(name, spd, erPercentage, initialEnergyPerc, prioSupSet, prioSupVonwacq) {
     switch (name) {
-        case 'Fu Xuan': return new Support(name, spd, 100, 'QQE', prioSupSet, prioSupVonwacq);
-        case 'Silver Wolf': return new Support(name, spd, 107, 'EQQ', prioSupSet, prioSupVonwacq);
+        case 'Fu Xuan': return new Support(name, spd, 135, erPercentage, initialEnergyPerc, 100, 'QQE', prioSupSet, prioSupVonwacq);
+        case 'Silver Wolf': return new Support(name, spd, 110, erPercentage, initialEnergyPerc, 107, 'EQQ', prioSupSet, prioSupVonwacq);
         // implement Bronya as a separate class.
         // case 'Bronya': return new Support(name, spd, 99, 'E');
-        default: return new Support('Default Support', spd, 100, 'EQQ', prioSupSet, prioSupVonwacq);
+        default: return new Support('Default Support', spd, 100, erPercentage, initialEnergyPerc, 100, 'EQQ', prioSupSet, prioSupVonwacq);
     }
 }
 

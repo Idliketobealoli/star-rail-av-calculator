@@ -79,13 +79,7 @@ export class Character {
     }
 
     ult() {
-        console.log(this.set);
-        if (this.set === ArtifactSet.SPEED) {
-            this.speedSetEffect(cycleTurns);
-        }
-        if (this.set === ArtifactSet.WIND) {
-            this.windSetEffect();
-        }
+
     }
 }
 

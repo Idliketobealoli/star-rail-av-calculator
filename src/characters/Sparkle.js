@@ -46,15 +46,16 @@ export class Sparkle extends Character {
                 setSp(MAX_SP);
             }
             this.currentEnergy = 5;
-        }
-        if (this.set === ArtifactSet.SPEED) {
-            this.speedSetEffect(cycleTurns);
-        }
-        if (this.set === ArtifactSet.WIND) {
-            this.windSetEffect();
-        }
-        if (this.ddd !== null && this.ddd >= 1 && this.ddd <= 5) {
-            this.danceDanceDance(this.ddd);
+
+            if (this.set === ArtifactSet.SPEED) {
+                this.speedSetEffect(cycleTurns);
+            }
+            if (this.set === ArtifactSet.WIND) {
+                this.windSetEffect();
+            }
+            if (this.ddd !== null && this.ddd >= 1 && this.ddd <= 5) {
+                this.danceDanceDance(this.ddd);
+            }
         }
     }
 
