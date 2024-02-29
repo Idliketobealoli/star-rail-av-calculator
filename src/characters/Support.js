@@ -53,6 +53,7 @@ export class Support extends Character {
 
     ult() {
         if (this.currentEnergy >= this.MAX_ENERGY) {
+            setTurnOrderMessage(getTurnOrderMessage().concat(`ULT [${this.name}] → `));
             this.currentEnergy = 5;
             if (this.set === ArtifactSet.SPEED) {
                 this.speedSetEffect(cycleTurns);
@@ -64,7 +65,6 @@ export class Support extends Character {
     }
 
     gainEnergy(mode) {
-        console.log(this.name);
         if (mode === 2 && this.name === 'Fu Xuan') {
             this.currentEnergy += (50 * (1+this.erPercentage));
         }

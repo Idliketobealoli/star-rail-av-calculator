@@ -86,7 +86,7 @@ export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, sparkleDdd
     if (showTurnOrder) { resultMessage = resultMessage.concat(`<li>Turn order: <br/>${turnOrderMessage}</li>`) }
     resultMessage = resultMessage.concat(`<br/></ul><br/>`);
 
-    results.push(new Result(sSpd, dps.buffedTurnsTaken, dps.turnsTaken, resultMessage));
+    results.push(new Result(sSpd, dps.turnsTaken, dps.buffedTurnsTaken, resultMessage));
     counter++;
 }
 

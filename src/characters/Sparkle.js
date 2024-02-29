@@ -41,6 +41,7 @@ export class Sparkle extends Character {
 
     ult() {
         if (this.currentEnergy >= this.MAX_ENERGY) {
+            setTurnOrderMessage(getTurnOrderMessage().concat("ULT [Sparkle] → "));
             addSp(4);
             if (getSp() > MAX_SP) {
                 setSp(MAX_SP);
