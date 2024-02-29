@@ -92,8 +92,8 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         if (inputMaxSparkleSpd.value === "" || inputMaxSparkleSpd.value > 200) { inputMaxSparkleSpd.value = 200; }
         if (inputMinSeeleSpd.value   === "" || inputMinSeeleSpd.value   < 115) { inputMinSeeleSpd.value   = 115; }
         if (inputMaxSeeleSpd.value   === "" || inputMaxSeeleSpd.value   > 200) { inputMaxSeeleSpd.value   = 200; }
-        if (inputMaxSparkleSpd.value <= inputMinSparkleSpd.value) { inputMaxSparkleSpd.value = parseInt(inputMinSparkleSpd.value); }
-        if (inputMaxSeeleSpd.value   <=   inputMinSeeleSpd.value) { inputMaxSeeleSpd.value = parseInt(inputMinSeeleSpd.value); }
+        if (inputMaxSparkleSpd.value <= inputMinSparkleSpd.value) { inputMaxSparkleSpd.value = parseFloat(inputMinSparkleSpd.value); }
+        if (inputMaxSeeleSpd.value   <=   inputMinSeeleSpd.value) { inputMaxSeeleSpd.value = parseFloat(inputMinSeeleSpd.value); }
 
         return correct;
     }
