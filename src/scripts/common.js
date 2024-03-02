@@ -2,6 +2,7 @@ import { Seele } from "../characters/Seele.js";
 import { Sparkle } from "../characters/Sparkle.js";
 import { Support } from "../characters/Support.js";
 import { ArtifactSet } from "../characters/Character.js";
+import {Bronya} from "../characters/Bronya.js";
 
 export class Result {
     constructor(seeleSpd, seeleTurns, buffedTurns, message) {
@@ -49,14 +50,15 @@ export function actionAdvance(percentage, characterCurrentAv, characterSpd) {
     else return (characterNewPosition / characterSpd);
 }
 
-export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, prioSupEr, supEr, sparkleDdd, prioSupName,
-                          otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
+export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, prioSupEr, supEr, sparkleLightcone,
+                          prioSupLightcone, supLightcone, prioSupName, otherSupName, initialEnergyPerc,
+                          hSet, prioSupSet, supSet) {
     if (cycles <   1) { cycles =   1; }
     if (cycles >  40) { cycles =  40; }
     if (initialEnergyPerc <   0) { initialEnergyPerc =   0; }
     if (initialEnergyPerc > 100) { initialEnergyPerc = 100; }
-    initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleDdd,
-        prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet);
+    initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleLightcone, prioSupLightcone,
+        supLightcone, prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet);
     reset(cycles);
 
     cycleTurns = [dps, sparkle, prioritarySupport, otherSupport];
@@ -152,26 +154,27 @@ export function setFooterWidth(main, footer) {
     }
 }
 
-function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleDdd,
-                        prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
+function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleLightcone, prioSupLightcone,
+                        supLightcone, prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
     if (sparkleEr < 100) { sparkleEr = 100; }
     if (prioSupEr < 100) { prioSupEr = 100; }
     if (supEr     < 100) { supEr     = 100; }
 
     dps = new Seele(sSpd, isE2Seele);
-    sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq, sparkleDdd);
+    sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq, sparkleLightcone);
 
-    prioritarySupport = initializeSupport(prioSupName, fSpd, prioSupEr, initialEnergyPerc, prioSupSet, prioSupVonwacq);
-    otherSupport = initializeSupport(otherSupName, swSpd, supEr, initialEnergyPerc, supSet, supVonwacq);
+    prioritarySupport = initializeSupport(prioSupName, fSpd, prioSupEr,
+        initialEnergyPerc, prioSupSet, prioSupVonwacq, prioSupLightcone);
+    otherSupport = initializeSupport(otherSupName, swSpd, supEr,
+        initialEnergyPerc, supSet, supVonwacq, supLightcone);
 }
 
-function initializeSupport(name, spd, erPercentage, initialEnergyPerc, prioSupSet, prioSupVonwacq) {
+function initializeSupport(name, spd, erPercentage, initialEnergyPerc, set, vonwacq, lightcone) {
     switch (name) {
-        case 'Fu Xuan': return new Support(name, spd, 135, erPercentage, initialEnergyPerc, 100, 'QQE', prioSupSet, prioSupVonwacq);
-        case 'Silver Wolf': return new Support(name, spd, 110, erPercentage, initialEnergyPerc, 107, 'EQQ', prioSupSet, prioSupVonwacq);
-        // implement Bronya as a separate class.
-        // case 'Bronya': return new Support(name, spd, 99, 'E');
-        default: return new Support('Default Support', spd, 100, erPercentage, initialEnergyPerc, 100, 'EQQ', prioSupSet, prioSupVonwacq);
+        case 'Fu Xuan': return new Support(name, spd, 135, erPercentage, initialEnergyPerc, 100, 'QQE', set, vonwacq);
+        case 'Silver Wolf': return new Support(name, spd, 110, erPercentage, initialEnergyPerc, 107, 'EQQ', set, vonwacq);
+        case 'Bronya': return new Bronya(spd, erPercentage, initialEnergyPerc, set, vonwacq, lightcone);
+        default: return new Support('Default Support', spd, 100, erPercentage, initialEnergyPerc, 100, 'EQQ', set, vonwacq);
     }
 }
 
@@ -204,8 +207,15 @@ function setInitialSP(characters) {
     }
 }
 
-export function addSp(amount) { currentSp += amount; }
-export function setSp(amount) { currentSp = amount; }
+export function addSp(amount) {
+    currentSp += amount;
+    if (currentSp > MAX_SP) {
+        currentSp = MAX_SP;
+    }
+    if (currentSp < 0 ) {
+        currentSp = 0;
+    }
+}
 export function getSp() { return currentSp; }
 
 export function getExtraMessage() { return extraMessage; }

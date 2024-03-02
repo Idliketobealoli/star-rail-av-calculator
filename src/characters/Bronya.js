@@ -1,14 +1,19 @@
-import {ArtifactSet, Character, Lightcones} from './Character.js';
+import {ArtifactSet, Character, Lightcones} from "./Character.js";
 import {
-    addSp, getSp, cycle,
-    getExtraMessage, setExtraMessage, actionAdvance,
-    prioritarySupport, dps, cycleTurns, setTurnOrderMessage, getTurnOrderMessage
+    actionAdvance,
+    addSp, cycle,
+    cycleTurns, dps, getExtraMessage,
+    getSp,
+    getTurnOrderMessage,
+    prioritarySupport,
+    setExtraMessage,
+    setTurnOrderMessage
 } from "../scripts/common.js";
 
-export class Sparkle extends Character {
+export class Bronya extends Character {
     constructor(spd, erPercentage, initialEnergyPercent, set, hasVonwacq, lightcone) {
-        super('Sparkle', spd, 101, set, hasVonwacq);
-        this.MAX_ENERGY = 110;
+        super('Bronya', spd, 99, set, hasVonwacq);
+        this.MAX_ENERGY = 120;
         this.basicAttacksUsed = 0;
         this.turnsTaken = 0;
         this.erPercentage = (erPercentage - 100) / 100;
@@ -17,30 +22,32 @@ export class Sparkle extends Character {
     }
 
     takeTurn() {
-        setTurnOrderMessage(getTurnOrderMessage().concat("Sparkle → "));
+        setTurnOrderMessage(getTurnOrderMessage().concat("Bronya → "));
         if (this.speedBuffDuration > 0) { this.speedBuffDuration-- }
         if (this.speedBuffDuration === 0) { this.resetSpeed(); }
         this.turnsTaken++;
         if (getSp() < 1 || (getSp() < 2 && prioritarySupport.getCurrentAction() === 'E' && cycleTurns[1] === prioritarySupport)) {
             addSp(1);
             this.basicAttacksUsed++;
-            setExtraMessage(getExtraMessage().concat(`<br>&nbsp;&nbsp;&nbsp;Couldn't use Sparkle's E at turn number ${this.turnsTaken}. Cycle ${cycle+1}.`));
+            setExtraMessage(getExtraMessage().concat(`<br>&nbsp;&nbsp;&nbsp;Couldn't use Bronya's E at turn number ${this.turnsTaken}. Cycle ${cycle+1}.`));
             dps.turnWillBeBuffed = false;
+            this.resetAv();
+            this.av = actionAdvance(30, this.av, this.spd);
+            this.gainEnergy(false);
         }
         else {
             addSp(-1);
-            dps.av = actionAdvance(50, dps.av, dps.spd);
+            dps.av = actionAdvance(100, dps.av, dps.spd);
             dps.turnWillBeBuffed = true;
+            this.resetAv();
+            this.gainEnergy(true);
         }
-        this.gainEnergy();
-        this.resetAv();
         this.ult();
     }
 
     ult() {
         if (this.currentEnergy >= this.MAX_ENERGY) {
-            setTurnOrderMessage(getTurnOrderMessage().concat("ULT [Sparkle] → "));
-            addSp(4);
+            setTurnOrderMessage(getTurnOrderMessage().concat("ULT [Bronya] → "));
             this.currentEnergy = 5;
 
             if (this.set === ArtifactSet.SPEED) {
@@ -71,7 +78,8 @@ export class Sparkle extends Character {
         }
     }
 
-    gainEnergy() {
-        this.currentEnergy += (30 * (1+this.erPercentage));
+    gainEnergy(usedE) {
+        if (usedE) { this.currentEnergy += (30 * (1+this.erPercentage)); }
+        else { this.currentEnergy += (20 * (1+this.erPercentage)); }
     }
 }

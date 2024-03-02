@@ -1,4 +1,4 @@
-import {actionAdvance, cycleTurns} from "../scripts/common.js";
+import {actionAdvance, addSp, cycleTurns} from "../scripts/common.js";
 
 export class Character {
     constructor(name, spd, baseSpd, set, hasVonwacq) {
@@ -11,6 +11,7 @@ export class Character {
         this.hasVonwacq = hasVonwacq;
         this.speedBuffDuration = 0;
         this.validate();
+        this.isOdd = true; // this is the counter for bronya's lightcone.
     }
 
     resetAv() {
@@ -19,9 +20,7 @@ export class Character {
 
     vonwacqEffect() {
         if (this.hasVonwacq) {
-            console.log("Using Vonwacq effect. Current AV = "+this.av);
             this.av = actionAdvance(50, this.av, this.spd);
-            console.log("AV after using Vonwacq = "+this.av);
         }
     }
 
@@ -34,25 +33,26 @@ export class Character {
     }
 
     speedSetEffect(characters) {
-        console.log("Using speed set effect.");
         for (let character of characters) {
-            console.log(`${character.name} spd before set effect: ${character.spd}`);
             character.speedBuffDuration = 1;
             character.modifySpeed(12, character);
-            console.log(`${character.name} spd after set effect: ${character.spd}`);
         }
     }
 
     windSetEffect() {
-        console.log("Using wind set effect. Current AV = "+this.av);
         this.av = actionAdvance(25, this.av, this.spd);
-        console.log("AV after using wind set = "+this.av);
     }
 
     danceDanceDance(superimposition) {
         for (let character of cycleTurns) {
-            console.log(`Superimposition ${superimposition} - advancing ${(14 +(2*superimposition))} %`);
             character.av = actionAdvance((14 +(2*superimposition)), character.av, character.spd);
+        }
+    }
+
+    butTheBattleIsntOver() {
+        if (this.isOdd) {
+            addSp(1);
+            this.isOdd = !this.isOdd;
         }
     }
 
@@ -96,5 +96,29 @@ export const implementedSets = [
     {value: 2, message: "4pc Eagle of Twilight Line"},
     {value: 3, message: "4pc Passerby of Wandering Cloud"}];
 
+export const Lightcones = Object.freeze({
+    DDDs1: 1,
+    DDDs2: 2,
+    DDDs3: 3,
+    DDDs4: 4,
+    DDDs5: 5,
+    BRONYA:6,
+    OTHER:-1
+});
+
+export const implementedCones = [
+    {value:-1, message: "Other"},
+    {value: 1, message: "Dance Dance Dance! s1"},
+    {value: 2, message: "Dance Dance Dance! s2"},
+    {value: 3, message: "Dance Dance Dance! s3"},
+    {value: 4, message: "Dance Dance Dance! s4"},
+    {value: 5, message: "Dance Dance Dance! s5"},
+    {value: 6, message: "But the Battle Isn't Over"}];
+
 export const implementedSupports = [
-    "Fu Xuan", "Silver Wolf", "Other"];
+    "Fu Xuan", "Silver Wolf", "Bronya", "Other"];
+
+export const harmonyUnits = [
+    "Sparkle", "Bronya", "Tingyun",
+    "Asta", "Ruan Mei", "Yukong", "Hanya"
+];

@@ -7,11 +7,12 @@ import {
     showResults,
     spliceResults
 } from "./common.js";
-import {implementedSets, implementedSupports} from "../characters/Character.js";
+import {harmonyUnits, implementedCones, implementedSets, implementedSupports} from "../characters/Character.js";
 
 {
     let button, main, footer;
-    let selectSparkleSet, sparkleDddSelect, selectPrioSupSet, selectSupSet;
+    let selectSparkleSet, sparkleConeSelect, prioSupConeSelect,
+        supConeSelect, selectPrioSupSet, selectSupSet;
     let inputSupSpd, inputPrioSupSpd, inputMaxSeeleSpd,
         inputMinSeeleSpd, inputMinSparkleSpd,
         inputMaxSparkleSpd, inputInitialEnergy,
@@ -20,6 +21,12 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
     let e2seele, sparkleVonwacq, prioSupVonwacq, supVonwacq, turnOrder;
     let prioSupSelect, supSelect, prioSupImg, supImg;
 
+
+    //TODO: ARREGLAR ERROR
+    // simulations.js:125 Uncaught TypeError: Cannot read properties of null (reading 'selectedOptions')
+    //     at runSimulations (simulations.js:125:39)
+    //     at HTMLButtonElement.simulate (simulations.js:71:9)
+    // prioSupConeSelect.selectedOptions[0].value, supConeSelect.selectedOptions[0].value,
     function start() {
         button = document.getElementById("calculate");
         inputMinSeeleSpd = document.getElementById("seeleMinSpd");
@@ -37,7 +44,9 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         inputResultsAmount = document.getElementById("resultsAmount");
         e2seele = document.getElementById("e2Seele");
         sparkleVonwacq = document.getElementById("sparkleVonwacq");
-        sparkleDddSelect = document.getElementById("sparkleDdd");
+        sparkleConeSelect = document.getElementById("sparkleCone");
+        prioSupConeSelect = document.getElementById("prioSupCone");
+        supConeSelect = document.getElementById("supCone");
         prioSupVonwacq = document.getElementById("prioSupVonwacq");
         supVonwacq = document.getElementById("supVonwacq");
         turnOrder = document.getElementById("turnOrder");
@@ -113,15 +122,26 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
     function runSimulations() {
         let seeleSpdSimulation = inputMinSeeleSpd.value;
         let hanabiSpdSimulation = inputMinSparkleSpd.value;
+
+        let prioSupCone = -1;
+        if (prioSupConeSelect !== null) {
+            prioSupCone = prioSupConeSelect.selectedOptions[0].value;
+        }
+        let supCone = -1;
+        if (supConeSelect !== null) {
+            supCone = supConeSelect.selectedOptions[0].value;
+        }
+
         while (seeleSpdSimulation <= inputMaxSeeleSpd.value) {
             while (hanabiSpdSimulation <= inputMaxSparkleSpd.value) {
                 calculate(
                     seeleSpdSimulation, hanabiSpdSimulation, inputPrioSupSpd.value,
                     inputSupSpd.value, inputCycles.value, sparkleEr.value, prioSupEr.value,
-                    supEr.value, sparkleDddSelect.selectedOptions[0].value,
-                    prioSupSelect.selectedOptions[0].value, supSelect.selectedOptions[0].value,
-                    inputInitialEnergy.value, selectSparkleSet.selectedIndex,
-                    selectPrioSupSet.selectedIndex, selectSupSet.selectedIndex);
+                    supEr.value, sparkleConeSelect.selectedOptions[0].value,
+                    prioSupCone, supCone, prioSupSelect.selectedOptions[0].value,
+                    supSelect.selectedOptions[0].value, inputInitialEnergy.value,
+                    selectSparkleSet.selectedIndex, selectPrioSupSet.selectedIndex,
+                    selectSupSet.selectedIndex);
                 hanabiSpdSimulation++;
             }
             seeleSpdSimulation++;
@@ -130,7 +150,7 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
     }
 
     function addSelects() {
-        addDddOptions();
+        addConeOptions(null);
         for (let implementedSet of implementedSets) {
             let element = document.createElement("option");
             element.setAttribute("value", implementedSet.value);
@@ -168,6 +188,7 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
                     }
                 }
                 updateImage("prioSup", e.target.selectedOptions[0].value);
+                addCustomOptions("prioSup", e.target.selectedOptions[0].value);
                 break;
             }
             case supSelect.id: {
@@ -179,8 +200,30 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
                     }
                 }
                 updateImage("sup", e.target.selectedOptions[0].value);
+                addCustomOptions("sup", e.target.selectedOptions[0].value);
                 break;
             }
+        }
+    }
+
+    function addCustomOptions(support, name) {
+        let span = document.getElementById(`${support}Span`);
+        let lightconeSelect = document.getElementById(`${support}Cone`);
+        if (span !== null) { span.remove(); }
+        if (lightconeSelect !== null) { lightconeSelect.remove(); }
+        if (harmonyUnits.includes(name)) {
+            span = document.createElement("span");
+            span.setAttribute("id", `${support}Span`);
+            span.textContent = "Equipped cone:";
+            lightconeSelect = document.createElement("select");
+            lightconeSelect.setAttribute("id", `${support}Cone`);
+            lightconeSelect.setAttribute("name", "cone");
+            lightconeSelect.setAttribute("required", "");
+
+            let p = document.getElementById(`${support}P`);
+            p.appendChild(span);
+            p.appendChild(lightconeSelect);
+            addConeOptions(support);
         }
     }
 
@@ -193,6 +236,10 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
             }
             case "Silver Wolf": {
                 imgUrl = "img/SilverWolf.png";
+                break;
+            }
+            case "Bronya": {
+                imgUrl = "img/Bronya.png";
                 break;
             }
             default: {
@@ -212,23 +259,24 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         }
     }
 
-    function addDddOptions() {
-        let dddSelects = document.getElementsByName("ddd");
-
-        let dddNotEquipped = document.createElement("option");
-        dddNotEquipped.setAttribute("value", "-1");
-        dddNotEquipped.textContent = "No";
-        for (let dddSelect of dddSelects) {
-            dddSelect.appendChild(dddNotEquipped.cloneNode(true));
+    function addConeOptions(support) {
+        let coneSelects = document.getElementsByName("cone");
+        if (support !== null) {
+            coneSelects = Array.from(coneSelects)
+                .filter(coneSelect => coneSelect.id === `${support}Cone`);
         }
 
-        for (let i = 1; i <= 5; i++) {
-            let element = document.createElement("option");
-            element.setAttribute("value", `${i}`);
-            element.textContent = "S"+i;
+        for (let coneSelect of coneSelects) {
+            coneSelect.innerHTML = '';
+        }
 
-            for (let dddSelect of dddSelects) {
-                dddSelect.appendChild(element.cloneNode(true));
+        for (let implementedCone of implementedCones) {
+            let element = document.createElement("option");
+            element.setAttribute("value", `${implementedCone.value}`);
+            element.textContent = implementedCone.message;
+
+            for (let coneSelect of coneSelects) {
+                coneSelect.appendChild(element.cloneNode(true));
             }
         }
     }
