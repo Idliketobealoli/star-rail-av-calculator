@@ -437,6 +437,10 @@ select {
   color: rgb(255, 255, 255);
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%;
 }
 select option {
   background-color: rgb(37, 68, 127);
@@ -506,6 +510,14 @@ select:hover {
   border-bottom: 1px solid rgb(190, 190, 205);
   margin-left: 20px;
   margin-right: 20px;
+}
+
+.down-a-bit {
+  transform: translateY(1.2rem);
+}
+
+.down-a-bit-less {
+  transform: translateY(0.6rem);
 }
 
 #message {

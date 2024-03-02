@@ -483,6 +483,10 @@ select {
   color: $font-color;
   border: 2px solid $white-transparent;
   border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%;
 
   option {
     background-color: $bg-color;
@@ -552,6 +556,14 @@ select {
   border-bottom: 1px solid $grey;
   margin-left: 20px;
   margin-right: 20px;
+}
+
+.down-a-bit {
+  transform: translateY(1.2rem);
+}
+
+.down-a-bit-less {
+  transform: translateY(0.6rem);
 }
 
 #message {

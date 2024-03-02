@@ -12,7 +12,7 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
     let button, main, footer;
     let selectSparkleSet, sparkleDddSelect, selectPrioSupSet, selectSupSet;
     let inputSeeleSpd, inputSparkleSpd, inputPrioSupSpd, inputSupSpd;
-    let inputCycles;
+    let inputCycles, inputInitialEnergy, sparkleEr, prioSupEr, supEr;
     let e2seele, sparkleVonwacq, prioSupVonwacq, supVonwacq, turnOrder;
     let prioSupSelect, supSelect, prioSupImg, supImg;
 
@@ -23,6 +23,10 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         inputPrioSupSpd = document.getElementById("fuSpd");
         inputSupSpd = document.getElementById("swSpd");
         inputCycles = document.getElementById("cycles");
+        inputInitialEnergy = document.getElementById("initialEnergyPerc");
+        sparkleEr = document.getElementById("sparkleEr");
+        prioSupEr = document.getElementById("prioSupEr");
+        supEr = document.getElementById("supEr");
         e2seele = document.getElementById("e2Seele");
         sparkleVonwacq = document.getElementById("sparkleVonwacq");
         sparkleDddSelect = document.getElementById("sparkleDdd");
@@ -54,10 +58,13 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         if (!validateForm()) { return; }
         resetResults();
 
-        calculate(inputSeeleSpd.value, inputSparkleSpd.value, inputPrioSupSpd.value,
-            inputSupSpd.value, inputCycles.value, 119, sparkleDddSelect.selectedOptions[0].value,
-            prioSupSelect.selectedOptions[0].value, supSelect.selectedOptions[0].value, 5,
-            selectSparkleSet.selectedIndex, selectPrioSupSet.selectedIndex, selectSupSet.selectedIndex);
+        calculate(
+            inputSeeleSpd.value, inputSparkleSpd.value, inputPrioSupSpd.value,
+            inputSupSpd.value, inputCycles.value, sparkleEr.value, prioSupEr.value,
+            supEr.value, sparkleDddSelect.selectedOptions[0].value,
+            prioSupSelect.selectedOptions[0].value, supSelect.selectedOptions[0].value,
+            inputInitialEnergy.value, selectSparkleSet.selectedIndex,
+            selectPrioSupSet.selectedIndex, selectSupSet.selectedIndex);
 
         sortResultsBySeeleTurns();
         showResults(main);
@@ -91,6 +98,15 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
             inputCycles.parentNode.setAttribute("class", "input-group red-border");
             correct = false; }
         else { inputCycles.parentNode.setAttribute("class", "input-group"); }
+
+        if (inputInitialEnergy.value === "") {
+            inputInitialEnergy.parentNode.setAttribute("class", "input-group red-border");
+            correct = false; }
+        else { inputInitialEnergy.parentNode.setAttribute("class", "input-group"); }
+
+        if (sparkleEr.value === "") { sparkleEr.value = 100; }
+        if (prioSupEr.value === "") { prioSupEr.value = 100; }
+        if (supEr.value     === "") { supEr.value     = 100; }
 
         return correct;
     }

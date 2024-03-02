@@ -14,7 +14,8 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
     let selectSparkleSet, sparkleDddSelect, selectPrioSupSet, selectSupSet;
     let inputSupSpd, inputPrioSupSpd, inputMaxSeeleSpd,
         inputMinSeeleSpd, inputMinSparkleSpd,
-        inputMaxSparkleSpd, inputExpectedBuffs;
+        inputMaxSparkleSpd, inputInitialEnergy,
+        sparkleEr, prioSupEr, supEr;
     let filterCriteria, inputResultsAmount, inputCycles;
     let e2seele, sparkleVonwacq, prioSupVonwacq, supVonwacq, turnOrder;
     let prioSupSelect, supSelect, prioSupImg, supImg;
@@ -25,10 +26,13 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         inputMaxSeeleSpd = document.getElementById("seeleMaxSpd");
         inputMinSparkleSpd = document.getElementById("hanabiMinSpd");
         inputMaxSparkleSpd = document.getElementById("hanabiMaxSpd");
-        inputExpectedBuffs = document.getElementById("buffedExpected");
         inputPrioSupSpd = document.getElementById("fuSpd");
         inputSupSpd = document.getElementById("swSpd");
         inputCycles = document.getElementById("cycles");
+        inputInitialEnergy = document.getElementById("initialEnergyPerc");
+        sparkleEr = document.getElementById("sparkleEr");
+        prioSupEr = document.getElementById("prioSupEr");
+        supEr = document.getElementById("supEr");
         filterCriteria = document.getElementById("criteria");
         inputResultsAmount = document.getElementById("resultsAmount");
         e2seele = document.getElementById("e2Seele");
@@ -62,7 +66,7 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         if (!validateSimulation()) { return; }
         resetResults();
         runSimulations();
-        filterResults(inputExpectedBuffs.value, filterCriteria.value);
+        filterResults(filterCriteria.value);
 
         if (inputResultsAmount.value  === "" || inputResultsAmount.value < 1) { inputResultsAmount.value = 10; }
         if (inputResultsAmount.value  > 25) { inputResultsAmount.value = 25; }
@@ -87,13 +91,21 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
             inputCycles.parentNode.setAttribute("class", "input-group red-border");
             correct = false; }
         else { inputCycles.parentNode.setAttribute("class", "input-group"); }
+        if (inputInitialEnergy.value === "") {
+            inputInitialEnergy.parentNode.setAttribute("class", "input-group red-border");
+            correct = false; }
+        else { inputInitialEnergy.parentNode.setAttribute("class", "input-group"); }
 
         if (inputMinSparkleSpd.value === "" || inputMinSparkleSpd.value < 101) { inputMinSparkleSpd.value = 101; }
         if (inputMaxSparkleSpd.value === "" || inputMaxSparkleSpd.value > 200) { inputMaxSparkleSpd.value = 200; }
         if (inputMinSeeleSpd.value   === "" || inputMinSeeleSpd.value   < 115) { inputMinSeeleSpd.value   = 115; }
         if (inputMaxSeeleSpd.value   === "" || inputMaxSeeleSpd.value   > 200) { inputMaxSeeleSpd.value   = 200; }
         if (inputMaxSparkleSpd.value <= inputMinSparkleSpd.value) { inputMaxSparkleSpd.value = parseFloat(inputMinSparkleSpd.value); }
-        if (inputMaxSeeleSpd.value   <=   inputMinSeeleSpd.value) { inputMaxSeeleSpd.value = parseFloat(inputMinSeeleSpd.value); }
+        if (inputMaxSeeleSpd.value   <=   inputMinSeeleSpd.value) { inputMaxSeeleSpd.value   = parseFloat(inputMinSeeleSpd.value);   }
+
+        if (sparkleEr.value === "") { sparkleEr.value = 100; }
+        if (prioSupEr.value === "") { prioSupEr.value = 100; }
+        if (supEr.value     === "") { supEr.value     = 100; }
 
         return correct;
     }
@@ -103,10 +115,13 @@ import {implementedSets, implementedSupports} from "../characters/Character.js";
         let hanabiSpdSimulation = inputMinSparkleSpd.value;
         while (seeleSpdSimulation <= inputMaxSeeleSpd.value) {
             while (hanabiSpdSimulation <= inputMaxSparkleSpd.value) {
-                calculate(seeleSpdSimulation, hanabiSpdSimulation, inputPrioSupSpd.value, inputSupSpd.value,
-                    inputCycles.value, 119, sparkleDddSelect.selectedOptions[0].value,
-                    prioSupSelect.selectedOptions[0].value, supSelect.selectedOptions[0].value, 5,
-                    selectSparkleSet.selectedIndex, selectPrioSupSet.selectedIndex, selectSupSet.selectedIndex);
+                calculate(
+                    seeleSpdSimulation, hanabiSpdSimulation, inputPrioSupSpd.value,
+                    inputSupSpd.value, inputCycles.value, sparkleEr.value, prioSupEr.value,
+                    supEr.value, sparkleDddSelect.selectedOptions[0].value,
+                    prioSupSelect.selectedOptions[0].value, supSelect.selectedOptions[0].value,
+                    inputInitialEnergy.value, selectSparkleSet.selectedIndex,
+                    selectPrioSupSet.selectedIndex, selectSupSet.selectedIndex);
                 hanabiSpdSimulation++;
             }
             seeleSpdSimulation++;

@@ -17,7 +17,7 @@ export class Support extends Character {
         this.currentAction = this.rotation.charAt(0);
         this.rotationIndex = 0;
         this.erPercentage = (erPercentage - 100) / 100;
-        this.currentEnergy = this.MAX_ENERGY / initialEnergyPercent;
+        this.currentEnergy = this.MAX_ENERGY * initialEnergyPercent / 100;
     }
 
     takeTurn() {

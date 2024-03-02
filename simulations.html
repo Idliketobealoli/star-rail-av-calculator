@@ -32,7 +32,9 @@
             <input type="number" id="hanabiMinSpd" min="101" placeholder="ex. 101" autocomplete="off"/>
             <label for="hanabiMaxSpd" class="hasImage">Sparkle's max speed:</label>
             <input type="number" id="hanabiMaxSpd" min="101" placeholder="ex. 161" autocomplete="off"/>
-            <div class="separator"></div>
+            <div class="separator down-a-bit-less"></div>
+            <label for="sparkleEr" class="hasImage down-a-bit">Energy Regeneration Rate:</label>
+            <input type="number" id="sparkleEr" class="down-a-bit" min="100" placeholder="ex. 119.4" required autocomplete="off"/>
             <p class="shadowed hasImage">
                 Equipped set:
                 <select id="sparkleSet" required></select><br/><br/>
@@ -47,8 +49,10 @@
             <label for="fuSpd" class="hasImage">Prioritary support's speed:<span class="red">*</span></label>
             <input type="number" id="fuSpd" min="90" placeholder="ex. 100" required autocomplete="off"/>
             <div class="separator"></div>
+            <label for="prioSupEr" class="hasImage down-a-bit">Energy Regeneration Rate:</label>
+            <input type="number" id="prioSupEr" class="down-a-bit" min="100" placeholder="ex. 119.4" required autocomplete="off"/>
             <p class="shadowed hasImage">
-                Who's your prioritary support?:
+                Prioritary support?:
                 <select id="prioSup" required></select><br/><br/>
                 Equipped set:
                 <select id="prioSupSet" required></select><br/><br/>
@@ -61,8 +65,10 @@
             <label for="swSpd" class="hasImage">Other support's speed:<span class="red">*</span></label>
             <input type="number" id="swSpd" min="90" placeholder="ex. 107" required autocomplete="off"/>
             <div class="separator"></div>
+            <label for="supEr" class="hasImage down-a-bit">Energy Regeneration Rate:</label>
+            <input type="number" id="supEr" class="down-a-bit" min="100" placeholder="ex. 119.4" required autocomplete="off"/>
             <p class="shadowed hasImage">
-                Who's your other support?:
+                Other support?:
                 <select id="sup" required></select><br/><br/>
                 Equipped set:
                 <select id="supSet" required></select><br/><br/>
@@ -75,6 +81,10 @@
             <input type="number" id="cycles" min="1" placeholder="ex. 1" required autocomplete="off"/>
         </div>
         <div class="input-group">
+            <label for="initialEnergyPerc">Initial energy (%):<span class="red">*</span></label>
+            <input type="number" id="initialEnergyPerc" min="1" max="100" placeholder="ex. 50" required autocomplete="off"/>
+        </div>
+        <div class="input-group">
             <p class="shadowed">
                 Filter criteria:&nbsp;Highest number of&nbsp;
                 <select id="criteria" required>
@@ -83,10 +93,6 @@
                 </select>
                 &nbsp;turns.
             </p>
-        </div>
-        <div class="input-group">
-            <label for="buffedExpected">Expected number of buffed turns:</label>
-            <input type="number" id="buffedExpected" min="1" placeholder="ex. 5" autocomplete="off"/>
         </div>
         <div class="input-group">
             <p class="shadowed">

@@ -14,7 +14,7 @@ export class Sparkle extends Character {
         this.basicAttacksUsed = 0;
         this.turnsTaken = 0;
         this.erPercentage = (erPercentage - 100) / 100;
-        this.currentEnergy = this.MAX_ENERGY / initialEnergyPercent;
+        this.currentEnergy = this.MAX_ENERGY * initialEnergyPercent / 100;
         this.ddd = ddd;
     }
 

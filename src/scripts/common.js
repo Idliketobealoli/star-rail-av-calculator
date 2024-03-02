@@ -49,12 +49,14 @@ export function actionAdvance(percentage, characterCurrentAv, characterSpd) {
     else return (characterNewPosition / characterSpd);
 }
 
-export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, sparkleDdd, prioSupName,
+export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, prioSupEr, supEr, sparkleDdd, prioSupName,
                           otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
     if (cycles <   1) { cycles =   1; }
     if (cycles >  40) { cycles =  40; }
-    initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, sparkleDdd, prioSupName,
-        otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet);
+    if (initialEnergyPerc <   0) { initialEnergyPerc =   0; }
+    if (initialEnergyPerc > 100) { initialEnergyPerc = 100; }
+    initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleDdd,
+        prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet);
     reset(cycles);
 
     cycleTurns = [dps, sparkle, prioritarySupport, otherSupport];
@@ -150,13 +152,17 @@ export function setFooterWidth(main, footer) {
     }
 }
 
-function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, sparkleDdd, prioSupName,
-                        otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
+function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleDdd,
+                        prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
+    if (sparkleEr < 100) { sparkleEr = 100; }
+    if (prioSupEr < 100) { prioSupEr = 100; }
+    if (supEr     < 100) { supEr     = 100; }
+
     dps = new Seele(sSpd, isE2Seele);
     sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq, sparkleDdd);
 
-    prioritarySupport = initializeSupport(prioSupName, fSpd, 100, initialEnergyPerc, prioSupSet, prioSupVonwacq);
-    otherSupport = initializeSupport(otherSupName, swSpd, 100, initialEnergyPerc, supSet, supVonwacq);
+    prioritarySupport = initializeSupport(prioSupName, fSpd, prioSupEr, initialEnergyPerc, prioSupSet, prioSupVonwacq);
+    otherSupport = initializeSupport(otherSupName, swSpd, supEr, initialEnergyPerc, supSet, supVonwacq);
 }
 
 function initializeSupport(name, spd, erPercentage, initialEnergyPerc, prioSupSet, prioSupVonwacq) {
@@ -211,14 +217,11 @@ export function setTurnOrderMessage(message) { turnOrderMessage = message; }
 export function sortResultsBySeeleTurns() { results = results.sort((a, b) => a.seeleTurns - b.seeleTurns); }
 export function resetResults() { results = []; }
 export function spliceResults(amount) { results.splice(amount); }
-export function filterResults(expectedBuffs, filterCriteria) {
-    let maxBuffedTurns;
-    if (expectedBuffs === "") {
-        maxBuffedTurns = results.reduce((maxResult, currentResult) => {
+export function filterResults(filterCriteria) {
+    let maxBuffedTurns = results.reduce((maxResult, currentResult) => {
             return currentResult.buffedTurns > maxResult.buffedTurns ? currentResult : maxResult;
         }, results[0]).buffedTurns - 2;
-    }
-    else { maxBuffedTurns = expectedBuffs; }
+
     results = results.filter(result => result.buffedTurns >= maxBuffedTurns);
 
     if (filterCriteria === "2") {
