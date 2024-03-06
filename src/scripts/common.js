@@ -22,6 +22,7 @@ export let sparkle;
 export let prioritarySupport;
 export let otherSupport;
 export let isE2Seele = false;
+export let isE4Sparkle = false;
 export let sparkleVonwacq = false;
 export let prioSupVonwacq = false;
 export let supVonwacq = false;
@@ -30,7 +31,7 @@ export let currentSp = 6;
 export let extraMessage = "";
 export let turnOrderMessage = "";
 export let counter = 0;
-export const MAX_SP = 7;
+export let MAX_SP = 7;
 
 export let results = [];
 
@@ -51,14 +52,14 @@ export function actionAdvance(percentage, characterCurrentAv, characterSpd) {
 }
 
 export function calculate(sSpd, hSpd, fSpd, swSpd, cycles, sparkleEr, prioSupEr, supEr, sparkleLightcone,
-                          prioSupLightcone, supLightcone, prioSupName, otherSupName, initialEnergyPerc,
-                          hSet, prioSupSet, supSet) {
+                          prioSupLightcone, supLightcone, prioSupEidolon, supEidolon, prioSupName,
+                          otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
     if (cycles <   1) { cycles =   1; }
     if (cycles >  40) { cycles =  40; }
     if (initialEnergyPerc <   0) { initialEnergyPerc =   0; }
     if (initialEnergyPerc > 100) { initialEnergyPerc = 100; }
     initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleLightcone, prioSupLightcone,
-        supLightcone, prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet);
+        supLightcone, prioSupEidolon, supEidolon, prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet);
     reset(cycles);
 
     cycleTurns = [dps, sparkle, prioritarySupport, otherSupport];
@@ -108,6 +109,10 @@ export function trueFalseButton(e) {
             showTurnOrder = !showTurnOrder;
             return showTurnOrder;
         }
+        case "e4sparkle": {
+            isE4Sparkle = !isE4Sparkle;
+            return isE4Sparkle;
+        }
         case "sparkle": {
             sparkleVonwacq = !sparkleVonwacq;
             return sparkleVonwacq;
@@ -155,25 +160,26 @@ export function setFooterWidth(main, footer) {
 }
 
 function initCharacters(sSpd, hSpd, fSpd, swSpd, sparkleEr, prioSupEr, supEr, sparkleLightcone, prioSupLightcone,
-                        supLightcone, prioSupName, otherSupName, initialEnergyPerc, hSet, prioSupSet, supSet) {
+                        supLightcone, prioSupEidolon, supEidolon, prioSupName, otherSupName, initialEnergyPerc,
+                        hSet, prioSupSet, supSet) {
     if (sparkleEr < 100) { sparkleEr = 100; }
     if (prioSupEr < 100) { prioSupEr = 100; }
     if (supEr     < 100) { supEr     = 100; }
 
     dps = new Seele(sSpd, isE2Seele);
-    sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq, sparkleLightcone);
+    sparkle = new Sparkle(hSpd, sparkleEr, initialEnergyPerc, hSet, sparkleVonwacq, sparkleLightcone, isE4Sparkle);
 
     prioritarySupport = initializeSupport(prioSupName, fSpd, prioSupEr,
-        initialEnergyPerc, prioSupSet, prioSupVonwacq, prioSupLightcone);
+        initialEnergyPerc, prioSupSet, prioSupVonwacq, prioSupLightcone, prioSupEidolon);
     otherSupport = initializeSupport(otherSupName, swSpd, supEr,
-        initialEnergyPerc, supSet, supVonwacq, supLightcone);
+        initialEnergyPerc, supSet, supVonwacq, supLightcone, supEidolon);
 }
 
-function initializeSupport(name, spd, erPercentage, initialEnergyPerc, set, vonwacq, lightcone) {
+function initializeSupport(name, spd, erPercentage, initialEnergyPerc, set, vonwacq, lightcone, eidolon) {
     switch (name) {
         case 'Fu Xuan': return new Support(name, spd, 135, erPercentage, initialEnergyPerc, 100, 'QQE', set, vonwacq);
         case 'Silver Wolf': return new Support(name, spd, 110, erPercentage, initialEnergyPerc, 107, 'EQQ', set, vonwacq);
-        case 'Bronya': return new Bronya(spd, erPercentage, initialEnergyPerc, set, vonwacq, lightcone);
+        case 'Bronya': return new Bronya(spd, erPercentage, initialEnergyPerc, set, vonwacq, lightcone, eidolon);
         default: return new Support('Default Support', spd, 100, erPercentage, initialEnergyPerc, 100, 'EQQ', set, vonwacq);
     }
 }
@@ -217,6 +223,8 @@ export function addSp(amount) {
     }
 }
 export function getSp() { return currentSp; }
+
+export function setMaxSp(maxSp) { MAX_SP = maxSp; }
 
 export function getExtraMessage() { return extraMessage; }
 export function setExtraMessage(message) { extraMessage = message;}

@@ -24,12 +24,16 @@ export class Seele extends Character {
 
     resetSpeed() {
         this.spd = (this.baseSpd*(1+(0.25*this.spdStacks))) + this.substatsSpd;
+        if (this.speedBuffDuration > 0) { this.modifySpeed(12); }
+        if (this.bronyaE2speedBuffDuration === 1) { this.modifySpeed(30); }
     }
 
     takeTurn() {
         setTurnOrderMessage(getTurnOrderMessage().concat("Seele → "));
-        if (this.speedBuffDuration > 0) { this.speedBuffDuration-- }
-        if (this.speedBuffDuration === 0) { this.resetSpeed(); }
+        if (this.speedBuffDuration > 0) { this.speedBuffDuration--; }
+        if (this.bronyaE2speedBuffDuration > 0) { this.bronyaE2speedBuffDuration--; }
+        this.resetSpeed();
+
         this.turnsTaken++;
         if (this.turnWillBeBuffed) {
             this.buffedTurnsTaken++;
@@ -40,6 +44,9 @@ export class Seele extends Character {
             addSp(1);
             this.basicAttacksUsed++;
             setExtraMessage(getExtraMessage().concat(`<br>&nbsp;&nbsp;&nbsp;Couldn't use Seele's E at turn number ${this.turnsTaken}. Cycle ${cycle+1}.`));
+            if (this.bronyaE2speedBuffDuration > 0) { this.bronyaE2speedBuffDuration--; }
+            //let previousSpd = this.spd;
+            this.resetSpeed();
             this.resetAv();
             this.av = actionAdvance(20, this.av, this.spd);
         }
@@ -48,8 +55,8 @@ export class Seele extends Character {
             if (this.isE2) {
                 if (this.spdStacks < 2) {
                     this.spdStacks++;
-                    this.spd =
-                        (this.baseSpd*(1+(0.25*this.spdStacks))) + this.substatsSpd;
+                    //this.spd =
+                    //    (this.baseSpd*(1+(0.25*this.spdStacks))) + this.substatsSpd;
                 }
                 else {
                     this.isAtFullSpeed = true;
@@ -57,22 +64,34 @@ export class Seele extends Character {
             }
             else {
                 this.spdStacks++;
-                this.spd = (this.baseSpd*1.25) + this.substatsSpd;
+                //this.spd = (this.baseSpd*1.25) + this.substatsSpd;
                 this.isAtFullSpeed = true;
             }
+            if (this.bronyaE2speedBuffDuration > 0) { this.bronyaE2speedBuffDuration--; }
+            this.resetSpeed();
             this.resetAv();
         }
         else if (getSp() > 0) {
             addSp(-1);
+            if (this.bronyaE2speedBuffDuration > 0) { this.bronyaE2speedBuffDuration--; }
+            this.resetSpeed();
             this.resetAv();
         }
         else {
             addSp(1);
             this.basicAttacksUsed++;
             setExtraMessage(getExtraMessage().concat(`<br>&nbsp;&nbsp;&nbsp;Couldn't use Seele's E at turn number ${this.turnsTaken}. Cycle ${cycle+1}.`));
+            if (this.bronyaE2speedBuffDuration > 0) { this.bronyaE2speedBuffDuration--; }
+            //let previousSpd = this.spd;
+            this.resetSpeed();
             this.resetAv();
-            this.av = actionAdvance(20, this.av, this.spd);
+            this.av = actionAdvance(20, this.av, this.spd); // use previousSpd if action advance does not occur after speed buff.
         }
         this.ult();
+        // TODO: Need testing. Bronya's E2 says:
+        // "When using Skill, the target ally's SPD increases by 30% after taking action, lasting for 1 turn."
+        // However, if Seele advances herself forward with a basic attack, does the speed buff take effect before
+        // or after the action advance from her basic attack?. If the former, this is correct. If the latter, check
+        // previous comment.
     }
 }

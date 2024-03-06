@@ -13,20 +13,15 @@ import {harmonyUnits, implementedCones, implementedSets, implementedSupports} fr
     let button, main, footer;
     let selectSparkleSet, sparkleConeSelect, prioSupConeSelect,
         supConeSelect, selectPrioSupSet, selectSupSet;
+    let prioSupEidolonSelect, supEidolonSelect;
     let inputSupSpd, inputPrioSupSpd, inputMaxSeeleSpd,
         inputMinSeeleSpd, inputMinSparkleSpd,
         inputMaxSparkleSpd, inputInitialEnergy,
         sparkleEr, prioSupEr, supEr;
     let filterCriteria, inputResultsAmount, inputCycles;
-    let e2seele, sparkleVonwacq, prioSupVonwacq, supVonwacq, turnOrder;
+    let e2seele, e4sparkle, sparkleVonwacq, prioSupVonwacq, supVonwacq, turnOrder;
     let prioSupSelect, supSelect, prioSupImg, supImg;
 
-
-    //TODO: ARREGLAR ERROR
-    // simulations.js:125 Uncaught TypeError: Cannot read properties of null (reading 'selectedOptions')
-    //     at runSimulations (simulations.js:125:39)
-    //     at HTMLButtonElement.simulate (simulations.js:71:9)
-    // prioSupConeSelect.selectedOptions[0].value, supConeSelect.selectedOptions[0].value,
     function start() {
         button = document.getElementById("calculate");
         inputMinSeeleSpd = document.getElementById("seeleMinSpd");
@@ -43,10 +38,9 @@ import {harmonyUnits, implementedCones, implementedSets, implementedSupports} fr
         filterCriteria = document.getElementById("criteria");
         inputResultsAmount = document.getElementById("resultsAmount");
         e2seele = document.getElementById("e2Seele");
+        e4sparkle = document.getElementById("e4Sparkle");
         sparkleVonwacq = document.getElementById("sparkleVonwacq");
         sparkleConeSelect = document.getElementById("sparkleCone");
-        prioSupConeSelect = document.getElementById("prioSupCone");
-        supConeSelect = document.getElementById("supCone");
         prioSupVonwacq = document.getElementById("prioSupVonwacq");
         supVonwacq = document.getElementById("supVonwacq");
         turnOrder = document.getElementById("turnOrder");
@@ -63,6 +57,7 @@ import {harmonyUnits, implementedCones, implementedSets, implementedSupports} fr
         addSelects();
 
         e2seele.addEventListener("click", trueFalseButton);
+        e4sparkle.addEventListener("click", trueFalseButton);
         sparkleVonwacq.addEventListener("click", trueFalseButton);
         prioSupVonwacq.addEventListener("click", trueFalseButton);
         supVonwacq.addEventListener("click", trueFalseButton);
@@ -123,14 +118,19 @@ import {harmonyUnits, implementedCones, implementedSets, implementedSupports} fr
         let seeleSpdSimulation = inputMinSeeleSpd.value;
         let hanabiSpdSimulation = inputMinSparkleSpd.value;
 
+        prioSupConeSelect = document.getElementById("prioSupCone");
+        supConeSelect = document.getElementById("supCone");
+        prioSupEidolonSelect = document.getElementById("prioSupEidolon");
+        supEidolonSelect = document.getElementById("supEidolon");
+
         let prioSupCone = -1;
-        if (prioSupConeSelect !== null) {
-            prioSupCone = prioSupConeSelect.selectedOptions[0].value;
-        }
+        if (prioSupConeSelect !== null) { prioSupCone = prioSupConeSelect.selectedOptions[0].value; }
         let supCone = -1;
-        if (supConeSelect !== null) {
-            supCone = supConeSelect.selectedOptions[0].value;
-        }
+        if (supConeSelect !== null) { supCone = supConeSelect.selectedOptions[0].value; }
+        let prioSupEidolon = -1;
+        if (prioSupEidolonSelect !== null) { prioSupEidolon = prioSupEidolonSelect.selectedOptions[0].value; }
+        let supEidolon = -1;
+        if (supEidolonSelect !== null) { supEidolon = supEidolonSelect.selectedOptions[0].value; }
 
         while (seeleSpdSimulation <= inputMaxSeeleSpd.value) {
             while (hanabiSpdSimulation <= inputMaxSparkleSpd.value) {
@@ -138,10 +138,10 @@ import {harmonyUnits, implementedCones, implementedSets, implementedSupports} fr
                     seeleSpdSimulation, hanabiSpdSimulation, inputPrioSupSpd.value,
                     inputSupSpd.value, inputCycles.value, sparkleEr.value, prioSupEr.value,
                     supEr.value, sparkleConeSelect.selectedOptions[0].value,
-                    prioSupCone, supCone, prioSupSelect.selectedOptions[0].value,
-                    supSelect.selectedOptions[0].value, inputInitialEnergy.value,
-                    selectSparkleSet.selectedIndex, selectPrioSupSet.selectedIndex,
-                    selectSupSet.selectedIndex);
+                    prioSupCone, supCone, prioSupEidolon, supEidolon,
+                    prioSupSelect.selectedOptions[0].value, supSelect.selectedOptions[0].value,
+                    inputInitialEnergy.value, selectSparkleSet.selectedIndex,
+                    selectPrioSupSet.selectedIndex, selectSupSet.selectedIndex);
                 hanabiSpdSimulation++;
             }
             seeleSpdSimulation++;
@@ -207,23 +207,72 @@ import {harmonyUnits, implementedCones, implementedSets, implementedSupports} fr
     }
 
     function addCustomOptions(support, name) {
-        let span = document.getElementById(`${support}Span`);
+        let spanCone = document.getElementById(`${support}SpanCone`);
         let lightconeSelect = document.getElementById(`${support}Cone`);
-        if (span !== null) { span.remove(); }
+        if (spanCone !== null) { spanCone.remove(); }
         if (lightconeSelect !== null) { lightconeSelect.remove(); }
         if (harmonyUnits.includes(name)) {
-            span = document.createElement("span");
-            span.setAttribute("id", `${support}Span`);
-            span.textContent = "Equipped cone:";
+            spanCone = document.createElement("span");
+            spanCone.setAttribute("id", `${support}SpanCone`);
+            spanCone.textContent = "Equipped cone: ";
             lightconeSelect = document.createElement("select");
             lightconeSelect.setAttribute("id", `${support}Cone`);
             lightconeSelect.setAttribute("name", "cone");
             lightconeSelect.setAttribute("required", "");
 
             let p = document.getElementById(`${support}P`);
-            p.appendChild(span);
+            p.appendChild(spanCone);
             p.appendChild(lightconeSelect);
             addConeOptions(support);
+        }
+        customEidolons(support, name);
+    }
+
+    function customEidolons(support, name) {
+        let spanEidolon = document.getElementById(`${support}SpanEidolon`);
+        let eidolonSelect = document.getElementById(`${support}Eidolon`);
+        let removableBrs = document.getElementsByName(`removableBr`);
+        if (spanEidolon !== null) { spanEidolon.remove(); }
+        if (eidolonSelect !== null) { eidolonSelect.remove(); }
+        for (let removableBr of Array.from(removableBrs)) {
+            removableBr.remove();
+        }
+
+        if (implementedSupports.includes(name) && name !== "Other") {
+            let removableBr = document.createElement("br");
+            removableBr.setAttribute("name", "removableBr");
+            spanEidolon = document.createElement("span");
+            spanEidolon.setAttribute("id", `${support}SpanEidolon`);
+            spanEidolon.textContent = "Select relevant eidolon: ";
+            eidolonSelect = document.createElement("select");
+            eidolonSelect.setAttribute("id", `${support}Eidolon`);
+            eidolonSelect.setAttribute("name", "eidolon");
+            eidolonSelect.setAttribute("required", "");
+
+            let p = document.getElementById(`${support}P`);
+            switch (name) {
+                case "Bronya": {
+                    let e0 = document.createElement("option");
+                    e0.setAttribute("value", "0");
+                    e0.textContent = "E0";
+                    let e1 = document.createElement("option");
+                    e1.setAttribute("value", "1");
+                    e1.textContent = "E1";
+                    let e2 = document.createElement("option");
+                    e2.setAttribute("value", "2");
+                    e2.textContent = "E2";
+
+                    eidolonSelect.append(e0, e1, e2);
+                    p.append(
+                        removableBr.cloneNode(true),
+                        removableBr.cloneNode(true),
+                        spanEidolon, eidolonSelect
+                    );
+                    break;
+                }
+
+                // TODO: IMPLEMENT MORE CHARACTERS.
+            }
         }
     }
 

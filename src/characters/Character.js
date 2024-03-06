@@ -10,6 +10,7 @@ export class Character {
         this.set = this.setArtifact(set);
         this.hasVonwacq = hasVonwacq;
         this.speedBuffDuration = 0;
+        this.bronyaE2speedBuffDuration = 0;
         this.validate();
         this.isOdd = true; // this is the counter for bronya's lightcone.
     }
@@ -20,22 +21,24 @@ export class Character {
 
     vonwacqEffect() {
         if (this.hasVonwacq) {
-            this.av = actionAdvance(50, this.av, this.spd);
+            this.av = actionAdvance(40, this.av, this.spd);
         }
     }
 
     resetSpeed() {
         this.spd = this.baseSpd + this.substatsSpd;
+        if (this.speedBuffDuration > 0) { this.modifySpeed(12); }
+        if (this.bronyaE2speedBuffDuration === 1) { this.modifySpeed(30); }
     }
 
-    modifySpeed(percentage, character) {
-        character.spd = parseFloat(character.spd) + (character.baseSpd*(percentage/100));
+    modifySpeed(percentage) {
+        this.spd = parseFloat(this.spd) + (this.baseSpd*(percentage/100));
     }
 
     speedSetEffect(characters) {
         for (let character of characters) {
             character.speedBuffDuration = 1;
-            character.modifySpeed(12, character);
+            character.resetSpeed();
         }
     }
 

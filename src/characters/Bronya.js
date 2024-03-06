@@ -11,7 +11,7 @@ import {
 } from "../scripts/common.js";
 
 export class Bronya extends Character {
-    constructor(spd, erPercentage, initialEnergyPercent, set, hasVonwacq, lightcone) {
+    constructor(spd, erPercentage, initialEnergyPercent, set, hasVonwacq, lightcone, eidolon) {
         super('Bronya', spd, 99, set, hasVonwacq);
         this.MAX_ENERGY = 120;
         this.basicAttacksUsed = 0;
@@ -19,11 +19,12 @@ export class Bronya extends Character {
         this.erPercentage = (erPercentage - 100) / 100;
         this.currentEnergy = this.MAX_ENERGY * initialEnergyPercent / 100;
         this.lightcone = lightcone;
+        this.eidolon = parseInt(eidolon);
     }
 
     takeTurn() {
         setTurnOrderMessage(getTurnOrderMessage().concat("Bronya → "));
-        if (this.speedBuffDuration > 0) { this.speedBuffDuration-- }
+        if (this.speedBuffDuration > 0) { this.speedBuffDuration--; }
         if (this.speedBuffDuration === 0) { this.resetSpeed(); }
         this.turnsTaken++;
         if (getSp() < 1 || (getSp() < 2 && prioritarySupport.getCurrentAction() === 'E' && cycleTurns[1] === prioritarySupport)) {
@@ -37,8 +38,10 @@ export class Bronya extends Character {
         }
         else {
             addSp(-1);
+            if (this.eidolon >= 1 && Math.random() < 0.5) { addSp(1); } // this achieves the E1 effect.
             dps.av = actionAdvance(100, dps.av, dps.spd);
             dps.turnWillBeBuffed = true;
+            if (this.eidolon >= 2) { dps.bronyaE2speedBuffDuration = 3; } // this is her E2. see Seele.js
             this.resetAv();
             this.gainEnergy(true);
         }

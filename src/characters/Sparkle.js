@@ -2,11 +2,11 @@ import {ArtifactSet, Character, Lightcones} from './Character.js';
 import {
     addSp, getSp, cycle,
     getExtraMessage, setExtraMessage, actionAdvance,
-    prioritarySupport, dps, cycleTurns, setTurnOrderMessage, getTurnOrderMessage
+    prioritarySupport, dps, cycleTurns, setTurnOrderMessage, getTurnOrderMessage, setMaxSp
 } from "../scripts/common.js";
 
 export class Sparkle extends Character {
-    constructor(spd, erPercentage, initialEnergyPercent, set, hasVonwacq, lightcone) {
+    constructor(spd, erPercentage, initialEnergyPercent, set, hasVonwacq, lightcone, isE4) {
         super('Sparkle', spd, 101, set, hasVonwacq);
         this.MAX_ENERGY = 110;
         this.basicAttacksUsed = 0;
@@ -14,7 +14,12 @@ export class Sparkle extends Character {
         this.erPercentage = (erPercentage - 100) / 100;
         this.currentEnergy = this.MAX_ENERGY * initialEnergyPercent / 100;
         this.lightcone = lightcone;
+        this.isE4 = isE4;
+
+        this.setSp();
     }
+
+    setSp() { this.isE4 ? setMaxSp(8) : setMaxSp(7); }
 
     takeTurn() {
         setTurnOrderMessage(getTurnOrderMessage().concat("Sparkle → "));
@@ -40,7 +45,7 @@ export class Sparkle extends Character {
     ult() {
         if (this.currentEnergy >= this.MAX_ENERGY) {
             setTurnOrderMessage(getTurnOrderMessage().concat("ULT [Sparkle] → "));
-            addSp(4);
+            this.isE4 ? addSp(5) : addSp(4);
             this.currentEnergy = 5;
 
             if (this.set === ArtifactSet.SPEED) {
